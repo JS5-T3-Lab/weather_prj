@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weatherman - 옷차림 추천</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 이 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="css/outfit.css" />
+  </head>
+  <body>
+    <!-- ===== 상단 네비게이션 ===== -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+          <span>Weatherman</span>
+        </a>
+        <div class="desktop-menu">
+          <a href="index.html" class="nav-link">
+            <i class="fa-solid fa-house"></i> 홈
+          </a>
+          <a href="travel.html" class="nav-link">
+            <i class="fa-solid fa-plane"></i> 여행 날씨
+          </a>
+          <a href="outfit.html" class="nav-link">
+            <i class="fa-solid fa-shirt"></i> 옷차림 추천
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== 본문 레이아웃 ===== -->
+    <div class="layout-wrapper">
+      <!-- 왼쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-left">
+        <div class="card">
+          <div class="card-header sky">🌡️ 오늘 vs 어제</div>
+          <div class="card-body">
+            <!-- TODO: 어제/오늘 날씨 비교 (outfit.js) -->
+            <div class="list-row">
+              <span class="label">어제</span>
+              <span class="value">--°C</span>
+            </div>
+            <div class="list-row">
+              <span class="label">오늘</span>
+              <span class="value highlight-sunset">--°C</span>
+            </div>
+            <div class="list-row">
+              <span class="label">체감온도</span>
+              <span class="value">--°C</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 중앙 메인 콘텐츠 -->
+      <main class="main-content">
+        <h2 class="page-title">👕 오늘의 옷차림 추천</h2>
+
+        <!-- TODO: 현재 위치 날씨 카드 (outfit.js) -->
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-header sky">📍 현재 위치 날씨</div>
+          <div
+            class="card-body weather-compare-card"
+            style="
+              min-height: 100px;
+              display: flex;
+              align-items: center;
+              color: var(--color-text-sub);
+            "
+          >
+            <span>현재 위치 날씨 정보가 들어갈 영역입니다</span>
+          </div>
+        </div>
+
+        <!-- TODO: 기온별 옷차림 추천 카드 (outfit.js) -->
+        <div class="card">
+          <div class="card-header sunset">👗 기온별 옷차림 추천</div>
+          <div
+            class="card-body outfit-recommend-card"
+            style="
+              min-height: 300px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--color-text-sub);
+            "
+          >
+            <div style="text-align: center">
+              <i
+                class="fa-solid fa-shirt"
+                style="
+                  font-size: 2.5rem;
+                  margin-bottom: 12px;
+                  color: var(--color-sunset);
+                "
+              ></i>
+              <p>현재 기온에 맞는 옷차림을 추천해드립니다.</p>
+              <p style="font-size: 0.8rem; margin-top: 8px">
+                (위치 정보를 허용해주세요)
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 오른쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-right">
+        <div class="card">
+          <div class="card-header sunset">🌈 기온 가이드</div>
+          <div class="card-body">
+            <!-- TODO: 기온 범위별 간략 가이드 (outfit.js) -->
+            <div class="list-row">
+              <span class="label">28°C 이상</span>
+              <span class="value highlight-sunset">민소매</span>
+            </div>
+            <div class="list-row">
+              <span class="label">23 ~ 27°C</span>
+              <span class="value">반팔</span>
+            </div>
+            <div class="list-row">
+              <span class="label">17 ~ 22°C</span>
+              <span class="value">얇은 가디건</span>
+            </div>
+            <div class="list-row">
+              <span class="label">12 ~ 16°C</span>
+              <span class="value">자켓 / 니트</span>
+            </div>
+            <div class="list-row">
+              <span class="label">11°C 이하</span>
+              <span class="value">코트 / 패딩</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>홈
+      </a>
+      <a href="travel.html" class="nav-link">
+        <i class="fa-solid fa-plane"></i>여행
+      </a>
+      <a href="outfit.html" class="nav-link">
+        <i class="fa-solid fa-shirt"></i>옷차림
+      </a>
+    </nav>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/outfit.js"></script>
+
+    <!-- 현재 페이지 네비게이션 활성화 -->
+    <script>
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        if (link.getAttribute("href") === "outfit.html") {
+          link.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>

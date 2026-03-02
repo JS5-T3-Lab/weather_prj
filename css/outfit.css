@@ -1,0 +1,22 @@
+/* =============================================
+   outfit.css - 옷차림 추천 페이지 전용 스타일
+   담당: 최지유
+   ============================================= */
+
+/* 페이지 제목 영역 */
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text-main);
+}
+
+/* TODO: 현재 위치 날씨 카드 (최지유 구현 예정) */
+.weather-compare-card {
+  /* 어제 날씨 vs 오늘 날씨 비교 영역 */
+}
+
+/* TODO: 기온별 옷차림 추천 카드 (최지유 구현 예정) */
+.outfit-recommend-card {
+  /* 기온 범위 별 옷차림 이미지 + 텍스트 */
+}

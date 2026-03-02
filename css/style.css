@@ -1,0 +1,219 @@
+/* =============================================
+   style.css - 공통 스타일
+   모든 페이지에서 공유하는 스타일을 작성하세요.
+   ============================================= */
+
+/* --- 1. 기본 설정 및 색상 변수 --- */
+:root {
+  --color-sunset: #ff6b35;
+  --color-sky: #4da8da;
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text-main: #1a1a2e;
+  --color-text-sub: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+}
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- 2. 상단 네비게이션 (GNB) --- */
+.top-nav {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-icon {
+  background: var(--color-sunset);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.desktop-menu {
+  display: flex;
+  gap: 10px;
+}
+.desktop-menu a {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-sub);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+.desktop-menu a:hover {
+  background: #f3f4f6;
+  color: var(--color-text-main);
+}
+.desktop-menu a.active {
+  background: var(--color-sky);
+  color: white;
+}
+
+/* --- 3. 메인 레이아웃 (3단) --- */
+.layout-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: flex;
+  gap: 24px;
+  min-height: calc(100vh - 64px);
+}
+
+/* 사이드바 */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 88px;
+  height: fit-content;
+}
+
+/* 중앙 콘텐츠 */
+.main-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* --- 4. 카드 컴포넌트 --- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.card-header.sunset {
+  background: var(--color-sunset);
+  color: white;
+}
+.card-header.sky {
+  background: var(--color-sky);
+  color: white;
+}
+.card-body {
+  padding: 16px;
+}
+
+/* --- 5. 리스트 행 --- */
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.list-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.list-row .label {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+}
+.list-row .value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+.list-row .value.highlight-sunset {
+  color: var(--color-sunset);
+}
+
+/* --- 6. 하단 네비게이션 (모바일 전용) --- */
+.bottom-nav {
+  display: none;
+}
+
+/* --- 7. 반응형 (모바일) --- */
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+  .layout-wrapper {
+    max-width: 600px;
+    padding-bottom: 80px;
+  }
+  .desktop-menu {
+    display: none;
+  }
+
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    z-index: 50;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-text-sub);
+    font-size: 0.75rem;
+    width: 33%;
+  }
+  .bottom-nav a i {
+    font-size: 1.3rem;
+  }
+  .bottom-nav a.active {
+    color: var(--color-sunset);
+  }
+}

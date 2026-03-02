@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weatherman - 여행 날씨</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 이 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="css/travel.css" />
+  </head>
+  <body>
+    <!-- ===== 상단 네비게이션 ===== -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+          <span>Weatherman</span>
+        </a>
+        <div class="desktop-menu">
+          <a href="index.html" class="nav-link">
+            <i class="fa-solid fa-house"></i> 홈
+          </a>
+          <a href="travel.html" class="nav-link">
+            <i class="fa-solid fa-plane"></i> 여행 날씨
+          </a>
+          <a href="outfit.html" class="nav-link">
+            <i class="fa-solid fa-shirt"></i> 옷차림 추천
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== 본문 레이아웃 ===== -->
+    <div class="layout-wrapper">
+      <!-- 왼쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-left">
+        <div class="card">
+          <div class="card-header sky">🏃 활동 선택</div>
+          <div class="card-body">
+            <!-- TODO: JS로 활동 선택 버튼 렌더링 (travel.js) -->
+            <p style="font-size: 0.85rem; color: var(--color-text-sub)">
+              활동 버튼이 들어갈 영역입니다.<br />
+              (골프, 낚시, 등산, 해변, 캠핑, 드라이브, 야외구기)
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header sky">📍 지역 선택</div>
+          <div class="card-body">
+            <!-- TODO: JS로 도시 선택 드롭다운 렌더링 (travel.js) -->
+            <p style="font-size: 0.85rem; color: var(--color-text-sub)">
+              국내외 주요 도시 선택 영역입니다.
+            </p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 중앙 메인 콘텐츠 -->
+      <main class="main-content">
+        <h2 class="page-title">✈️ 여행 & 취미활동 날씨</h2>
+
+        <!-- TODO: 날짜 선택 (travel.js) -->
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-header sky">📅 날짜 선택 (8일 이내)</div>
+          <div
+            class="card-body date-selector"
+            style="
+              min-height: 60px;
+              display: flex;
+              align-items: center;
+              color: var(--color-text-sub);
+            "
+          >
+            <span>날짜 선택 UI가 들어갈 영역입니다</span>
+          </div>
+        </div>
+
+        <!-- TODO: 검색 결과 테이블 (travel.js) -->
+        <div class="card">
+          <div class="card-header sunset">📋 활동별 날씨 정보</div>
+          <div
+            class="card-body result-table"
+            style="
+              min-height: 300px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--color-text-sub);
+            "
+          >
+            <div style="text-align: center">
+              <i
+                class="fa-solid fa-magnifying-glass"
+                style="
+                  font-size: 2.5rem;
+                  margin-bottom: 12px;
+                  color: var(--color-sky);
+                "
+              ></i>
+              <p>활동과 지역, 날짜를 선택하면<br />날씨 정보가 표시됩니다.</p>
+              <p style="font-size: 0.8rem; margin-top: 8px">
+                (강수량, 자외선, 풍속 등)
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 오른쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-right">
+        <div class="card">
+          <div class="card-header sunset">💡 활동별 날씨 팁</div>
+          <div
+            class="card-body"
+            style="
+              font-size: 0.9rem;
+              line-height: 1.5;
+              color: var(--color-text-sub);
+            "
+          >
+            <!-- TODO: JS로 선택된 활동에 맞는 팁 렌더링 (travel.js) -->
+            활동을 선택하면 맞춤 날씨 팁이 표시됩니다.
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>홈
+      </a>
+      <a href="travel.html" class="nav-link">
+        <i class="fa-solid fa-plane"></i>여행
+      </a>
+      <a href="outfit.html" class="nav-link">
+        <i class="fa-solid fa-shirt"></i>옷차림
+      </a>
+    </nav>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/travel.js"></script>
+
+    <!-- 현재 페이지 네비게이션 활성화 -->
+    <script>
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        if (link.getAttribute("href") === "travel.html") {
+          link.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>

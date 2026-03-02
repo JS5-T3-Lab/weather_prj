@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weatherman - 홈</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 이 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <!-- ===== 상단 네비게이션 ===== -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+          <span>Weatherman</span>
+        </a>
+        <div class="desktop-menu">
+          <a href="index.html" class="nav-link">
+            <i class="fa-solid fa-house"></i> 홈
+          </a>
+          <a href="travel.html" class="nav-link">
+            <i class="fa-solid fa-plane"></i> 여행 날씨
+          </a>
+          <a href="outfit.html" class="nav-link">
+            <i class="fa-solid fa-shirt"></i> 옷차림 추천
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== 본문 레이아웃 ===== -->
+    <div class="layout-wrapper">
+      <!-- 왼쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-left">
+        <div class="card">
+          <div class="card-header sky">🌤️ 현재 날씨 요약</div>
+          <div class="card-body" style="text-align: center">
+            <i
+              class="fa-solid fa-sun"
+              style="
+                font-size: 3rem;
+                color: var(--color-sunset);
+                margin-bottom: 10px;
+              "
+            ></i>
+            <!-- TODO: JS로 실제 날씨 데이터 렌더링 (index.js) -->
+            <h2 style="font-size: 2rem; margin-bottom: 5px">--°C</h2>
+            <p style="color: var(--color-text-sub); font-size: 0.9rem">
+              위치 로딩 중...
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header sky">⭐️ 즐겨찾는 도시</div>
+          <div class="card-body">
+            <!-- TODO: JS로 즐겨찾기 도시 목록 렌더링 (index.js) -->
+            <div class="list-row">
+              <span class="label">New York</span>
+              <span class="value highlight-sunset">--°C</span>
+            </div>
+            <div class="list-row">
+              <span class="label">London</span>
+              <span class="value">--°C</span>
+            </div>
+            <div class="list-row">
+              <span class="label">Tokyo</span>
+              <span class="value highlight-sunset">--°C</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 중앙 메인 콘텐츠 -->
+      <main class="main-content">
+        <!-- 검색창 -->
+        <div class="search-bar">
+          <i
+            class="fa-solid fa-magnifying-glass"
+            style="color: var(--color-text-sub)"
+          ></i>
+          <input
+            type="text"
+            placeholder="도시를 검색해보세요..."
+            id="searchInput"
+          />
+        </div>
+
+        <!-- TODO: 시간별 기온 + 강수량 그래프 카드 (index.js) -->
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-header sky">📊 시간별 날씨</div>
+          <div
+            class="card-body hourly-chart-area"
+            style="
+              min-height: 180px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--color-text-sub);
+            "
+          >
+            <span>시간별 기온/강수량 그래프가 들어갈 영역입니다</span>
+          </div>
+        </div>
+
+        <!-- 날씨 피드 게시물 -->
+        <article class="feed-post">
+          <div class="post-top">
+            <div class="post-avatar">
+              <i class="fa-solid fa-building"></i>
+            </div>
+            <div class="post-info">
+              <div class="author">서울시 기상청</div>
+              <div class="time">10분 전</div>
+            </div>
+          </div>
+          <p class="post-text">
+            오늘 서울은 대체로 맑고 화창한 날씨가 이어지겠습니다. 야외 활동하기
+            아주 좋은 날씨입니다. 자외선이 약간 강할 수 있으니 선크림을
+            준비하세요!
+          </p>
+          <div class="post-weather-box">
+            <!-- TODO: JS로 실제 데이터 채우기 -->
+            <div class="temp">24°C</div>
+            <div>
+              <div style="font-weight: 600; font-size: 1.1rem">
+                맑음 (Clear)
+              </div>
+              <div
+                style="
+                  font-size: 0.85rem;
+                  color: var(--color-text-sub);
+                  margin-top: 5px;
+                "
+              >
+                체감 25°C • 습도 45% • 풍속 3m/s
+              </div>
+            </div>
+          </div>
+          <div class="post-actions">
+            <span><i class="fa-regular fa-heart"></i> 좋아요</span>
+            <span><i class="fa-regular fa-bookmark"></i> 저장</span>
+          </div>
+        </article>
+      </main>
+
+      <!-- 오른쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-right">
+        <div class="card">
+          <div class="card-header sunset">🔥 실시간 날씨 트렌드</div>
+          <div class="card-body">
+            <!-- TODO: JS로 트렌드 태그 렌더링 -->
+            <div class="list-row"><span class="label">#초여름날씨</span></div>
+            <div class="list-row"><span class="label">#자외선주의보</span></div>
+            <div class="list-row">
+              <span class="label">#제주도호우특보</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header sunset">💡 날씨 팁</div>
+          <div
+            class="card-body"
+            style="
+              font-size: 0.9rem;
+              line-height: 1.5;
+              color: var(--color-text-sub);
+            "
+          >
+            일교차가 10도 이상 나는 날에는 얇은 겉옷을 여러 겹 겹쳐 입는 것이
+            체온 유지에 좋습니다.
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>홈
+      </a>
+      <a href="travel.html" class="nav-link">
+        <i class="fa-solid fa-plane"></i>여행
+      </a>
+      <a href="outfit.html" class="nav-link">
+        <i class="fa-solid fa-shirt"></i>옷차림
+      </a>
+    </nav>
+
+    <!-- config.js를 먼저 불러와야 API_KEY를 사용할 수 있음 -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/index.js"></script>
+
+    <!-- 현재 페이지 네비게이션 활성화 -->
+    <script>
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        if (link.getAttribute("href") === "index.html") {
+          link.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>

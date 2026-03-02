@@ -1,0 +1,88 @@
+/* =============================================
+   index.css - 메인페이지 전용 스타일
+   담당: 강기범
+   ============================================= */
+
+/* 검색창 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 20px;
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* 피드 게시물 */
+.feed-post {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.post-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff3e0;
+  color: var(--color-sunset);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.post-info .author {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.post-info .time {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+}
+.post-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+.post-weather-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.post-weather-box .temp {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-sky);
+}
+.post-actions {
+  display: flex;
+  gap: 20px;
+  color: var(--color-text-sub);
+  border-top: 1px solid var(--color-border);
+  padding-top: 15px;
+  cursor: pointer;
+}
+
+/* TODO: 시간별 날씨 그래프 영역 (강기범 구현 예정) */
+.hourly-chart-area {
+  /* 여기에 그래프 스타일 추가 */
+}
