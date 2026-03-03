@@ -74,6 +74,11 @@ async function initCurrentWeather() {
     }
   }
 }
+
+// 페이지가 로드되면 날씨 초기화 함수 실행
+document.addEventListener("DOMContentLoaded", () => {
+  initCurrentWeather();
+});
 // TODO: 시간별 기온/강수량 그래프
 // TODO: 즐겨찾기 도시 날씨
 // TODO: 검색 기능
