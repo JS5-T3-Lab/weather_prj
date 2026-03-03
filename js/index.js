@@ -97,6 +97,28 @@ async function initCurrentWeather() {
 document.addEventListener("DOMContentLoaded", () => {
   initCurrentWeather();
 });
+
+// TODO: 검색창
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", (e) => {
+  const keyword = e.target.value.trim();
+  if (keyword.length < 1) return;
+
+  // 한글 검색 → cities.js에서 매핑
+  const results = searchCityByKorean(keyword);
+
+  if (results.length > 0) {
+    showSearchSuggestions(results); // 자동완성 드롭다운 표시
+  }
+});
+
+// 도시 선택 시 날씨 요청 (좌표 기반으로 요청 — 영어명 필요 없음!)
+async function loadCityWeather(city) {
+  const data = await getCurrentWeatherByCoords(city.lat, city.lon);
+  // 이후 UI 업데이트
+}
+
 // TODO: 시간별 기온/강수량 그래프
 // TODO: 즐겨찾기 도시 날씨
 // TODO: 검색 기능

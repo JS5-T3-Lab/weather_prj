@@ -208,7 +208,7 @@ a {
     gap: 4px;
     color: var(--color-text-sub);
     font-size: 0.75rem;
-    width: 33%;
+    width: 25%;
   }
   .bottom-nav a i {
     font-size: 1.3rem;

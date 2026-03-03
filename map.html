@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weatherman - 날씨 지도</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Leaflet.js -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 이 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="css/map.css" />
+  </head>
+  <body>
+    <!-- ===== 상단 네비게이션 ===== -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+          <span>Weatherman</span>
+        </a>
+        <div class="desktop-menu">
+          <a href="index.html" class="nav-link"
+            ><i class="fa-solid fa-house"></i> 홈</a
+          >
+          <a href="map.html" class="nav-link"
+            ><i class="fa-solid fa-map-location-dot"></i> 날씨 지도</a
+          >
+          <a href="travel.html" class="nav-link"
+            ><i class="fa-solid fa-plane"></i> 여행 날씨</a
+          >
+          <a href="outfit.html" class="nav-link"
+            ><i class="fa-solid fa-shirt"></i> 옷차림 추천</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== 본문 레이아웃 ===== -->
+    <div class="layout-wrapper">
+      <!-- 왼쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-left">
+        <!-- 도시 검색 -->
+        <div class="card">
+          <div class="card-header sky">
+            <i class="fa-solid fa-magnifying-glass"></i> 도시 검색
+          </div>
+          <div class="card-body">
+            <div class="map-search-wrap">
+              <input
+                type="text"
+                id="mapSearchInput"
+                class="map-search-input"
+                placeholder="한글로 도시명을 검색하세요"
+                autocomplete="off"
+              />
+              <i
+                class="fa-solid fa-xmark map-search-clear"
+                id="searchClear"
+                style="display: none"
+              ></i>
+            </div>
+            <!-- 자동완성 드롭다운 -->
+            <ul class="search-dropdown" id="searchDropdown"></ul>
+          </div>
+        </div>
+
+        <!-- 즐겨찾기 목록 -->
+        <div class="card">
+          <div class="card-header sky">
+            <i class="fa-solid fa-star"></i> 즐겨찾기 도시
+            <span class="favorite-count" id="favoriteCount">0 / 5</span>
+          </div>
+          <div class="card-body" id="favoriteList">
+            <!-- TODO: map.js에서 즐겨찾기 목록 렌더링 -->
+            <div class="empty-favorite">
+              <i class="fa-regular fa-star"></i>
+              <p>즐겨찾기한 도시가 없어요</p>
+              <p>지도에서 도시를 선택해보세요</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 중앙 메인 콘텐츠 -->
+      <main class="main-content map-main">
+        <!-- 지도 컨테이너 -->
+        <div class="map-container card">
+          <div id="weatherMap"></div>
+
+          <!-- 지도 레이어 토글 -->
+          <div class="map-layer-toggle">
+            <button
+              class="layer-btn active"
+              data-layer="default"
+              title="기본 지도"
+            >
+              <i class="fa-solid fa-map"></i>
+            </button>
+            <button class="layer-btn" data-layer="satellite" title="위성 지도">
+              <i class="fa-solid fa-satellite"></i>
+            </button>
+          </div>
+
+          <!-- 내 위치 버튼 -->
+          <button
+            class="map-my-location"
+            id="myLocationBtn"
+            title="내 위치로 이동"
+          >
+            <i class="fa-solid fa-location-crosshairs"></i>
+          </button>
+        </div>
+
+        <!-- 선택된 도시 날씨 상세 패널 -->
+        <div
+          class="city-detail-panel card"
+          id="cityDetailPanel"
+          style="display: none"
+        >
+          <div class="city-detail-header">
+            <div class="city-detail-name">
+              <h3 id="detailCityName">--</h3>
+              <span class="city-country-badge" id="detailCityCountry">--</span>
+            </div>
+            <div class="city-detail-actions">
+              <button class="favorite-toggle-btn" id="favoriteToggleBtn">
+                <i class="fa-regular fa-star"></i>
+                <span>즐겨찾기 추가</span>
+              </button>
+              <button class="panel-close-btn" id="panelCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="city-detail-body">
+            <div class="detail-weather-main">
+              <i
+                class="fa-solid fa-sun detail-weather-icon"
+                id="detailWeatherIcon"
+              ></i>
+              <div class="detail-temp-wrap">
+                <span class="detail-temp" id="detailTemp">--°C</span>
+                <span class="detail-desc" id="detailDesc">--</span>
+              </div>
+            </div>
+            <div class="detail-weather-grid">
+              <div class="detail-item">
+                <i class="fa-solid fa-temperature-half"></i>
+                <span class="detail-item-label">체감온도</span>
+                <span class="detail-item-value" id="detailFeelsLike">--°C</span>
+              </div>
+              <div class="detail-item">
+                <i class="fa-solid fa-droplet"></i>
+                <span class="detail-item-label">습도</span>
+                <span class="detail-item-value" id="detailHumidity">--%</span>
+              </div>
+              <div class="detail-item">
+                <i class="fa-solid fa-wind"></i>
+                <span class="detail-item-label">풍속</span>
+                <span class="detail-item-value" id="detailWind">-- m/s</span>
+              </div>
+              <div class="detail-item">
+                <i class="fa-solid fa-eye"></i>
+                <span class="detail-item-label">가시거리</span>
+                <span class="detail-item-value" id="detailVisibility"
+                  >-- km</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 오른쪽 사이드바 -->
+      <aside class="sidebar" id="sidebar-right">
+        <!-- 주요 도시 날씨 뉴스 피드 -->
+        <div class="card">
+          <div class="card-header sunset">
+            <i class="fa-solid fa-newspaper"></i> 주요 도시 날씨
+          </div>
+          <div class="card-body" id="cityNewsFeed">
+            <!-- TODO: map.js에서 주요 도시 날씨 뉴스 피드 렌더링 -->
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 날씨 아이콘 범례 -->
+        <div class="card">
+          <div class="card-header sunset">
+            <i class="fa-solid fa-circle-info"></i> 날씨 아이콘 안내
+          </div>
+          <div class="card-body">
+            <div class="legend-item">
+              <i class="fa-solid fa-sun legend-icon sunny"></i><span>맑음</span>
+            </div>
+            <div class="legend-item">
+              <i class="fa-solid fa-cloud-sun legend-icon partly"></i
+              ><span>구름 조금</span>
+            </div>
+            <div class="legend-item">
+              <i class="fa-solid fa-cloud legend-icon cloudy"></i
+              ><span>흐림</span>
+            </div>
+            <div class="legend-item">
+              <i class="fa-solid fa-cloud-rain legend-icon rainy"></i
+              ><span>비</span>
+            </div>
+            <div class="legend-item">
+              <i class="fa-solid fa-snowflake legend-icon snowy"></i
+              ><span>눈</span>
+            </div>
+            <div class="legend-item">
+              <i class="fa-solid fa-bolt legend-icon stormy"></i
+              ><span>천둥번개</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-link"
+        ><i class="fa-solid fa-house"></i>홈</a
+      >
+      <a href="map.html" class="nav-link"
+        ><i class="fa-solid fa-map-location-dot"></i>지도</a
+      >
+      <a href="travel.html" class="nav-link"
+        ><i class="fa-solid fa-plane"></i>여행</a
+      >
+      <a href="outfit.html" class="nav-link"
+        ><i class="fa-solid fa-shirt"></i>옷차림</a
+      >
+    </nav>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/cities.js"></script>
+    <script src="js/map.js"></script>
+
+    <script>
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        if (link.getAttribute("href") === "map.html") {
+          link.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>
