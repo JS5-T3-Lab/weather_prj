@@ -12,13 +12,21 @@ const weatherIconEl = summaryCardBody.querySelector("i");
 const currentTempEl = summaryCardBody.querySelector("h2");
 const currentLocationEl = summaryCardBody.querySelector("p");
 
-// 날씨 상태에 따른 FontAwesome 아이콘 클래스 반환 함수
-function getWeatherIconClass(weatherMain) {
+// 낮/밤 여부 판단 함수 추가
+function isDaytime(sunriseUnix, sunsetUnix) {
+  const now = Math.floor(Date.now() / 1000); // 현재 시각 → Unix 초
+  return now >= sunriseUnix && now < sunsetUnix;
+}
+
+// 날씨 + 낮/밤 모두 반영하도록 수정
+function getWeatherIconClass(weatherMain, sunriseUnix, sunsetUnix) {
+  const daytime = isDaytime(sunriseUnix, sunsetUnix);
+
   switch (weatherMain.toLowerCase()) {
     case "clear":
-      return "fa-sun";
+      return daytime ? "fa-sun" : "fa-moon"; // ☀️ vs 🌙
     case "clouds":
-      return "fa-cloud";
+      return daytime ? "fa-cloud-sun" : "fa-cloud-moon"; // 낮 구름 vs 밤 구름
     case "rain":
       return "fa-cloud-rain";
     case "snow":
@@ -28,7 +36,7 @@ function getWeatherIconClass(weatherMain) {
     case "drizzle":
       return "fa-cloud-showers-water";
     default:
-      return "fa-cloud-sun";
+      return daytime ? "fa-cloud-sun" : "fa-cloud-moon";
   }
 }
 
@@ -39,9 +47,19 @@ function updateWeatherUI(data) {
   const cityName = data.name;
   const weatherMain = data.weather[0].main;
   const description = data.weather[0].description;
+  const sunrise = data.sys.sunrise;
+  const sunset = data.sys.sunset;
 
-  // 아이콘, 온도, 위치 텍스트 업데이트
-  weatherIconEl.className = `fa-solid ${getWeatherIconClass(weatherMain)}`;
+  // 아이콘 클래스 결정 (낮/밤 반영)
+  const iconClass = getWeatherIconClass(weatherMain, sunrise, sunset);
+
+  // 아이콘 색상도 낮/밤에 따라 변경
+  const isDay = isDaytime(sunrise, sunset);
+  weatherIconEl.className = `fa-solid ${iconClass}`;
+  weatherIconEl.style.color = isDay
+    ? "var(--color-sunset)" // 낮: 주황
+    : "#7c9cbf"; // 밤: 차분한 파란빛
+
   currentTempEl.textContent = `${temp}°C`;
   currentLocationEl.textContent = `${cityName} - ${description}`;
 }
