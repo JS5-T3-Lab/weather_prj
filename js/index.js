@@ -152,8 +152,36 @@ async function initHourlyChart(lat, lon) {
     },
   });
 }
-// TODO: 즐겨찾기 도시 날씨
-// TODO: 검색 기능
+
+// AQI 등급 → 한글 라벨 + 색상
+function getAqiInfo(aqi) {
+  const grades = {
+    1: { label: "좋음", color: "#22c55e" },
+    2: { label: "보통", color: "#84cc16" },
+    3: { label: "나쁨", color: "#f59e0b" },
+    4: { label: "매우나쁨", color: "#ef4444" },
+    5: { label: "위험", color: "#7c3aed" },
+  };
+  return grades[aqi] || { label: "--", color: "#9ca3af" };
+}
+
+async function initAirQuality(lat, lon) {
+  const data = await getAirPollution(lat, lon);
+  const { aqi } = data.list[0].main;
+  const { pm2_5, pm10, co, o3, no2, so2 } = data.list[0].components;
+  const info = getAqiInfo(aqi);
+
+  document.getElementById("aqiGrade").textContent = info.label;
+  document.getElementById("aqiGrade").style.color = info.color;
+  document.getElementById("aqiLabel").textContent =
+    `통합대기환경지수 ${aqi}등급`;
+  document.getElementById("aqiPm10").textContent = `${pm10.toFixed(1)} ㎍/㎥`;
+  document.getElementById("aqiPm25").textContent = `${pm2_5.toFixed(1)} ㎍/㎥`;
+  document.getElementById("aqiCo").textContent = `${co.toFixed(1)} ㎍/㎥`;
+  document.getElementById("aqiO3").textContent = `${o3.toFixed(1)} ㎍/㎥`;
+  document.getElementById("aqiNo2").textContent = `${no2.toFixed(1)} ㎍/㎥`;
+  document.getElementById("aqiSo2").textContent = `${so2.toFixed(1)} ㎍/㎥`;
+}
 
 // 페이지가 로드되면 날씨 초기화 함수 실행
 document.addEventListener("DOMContentLoaded", () => {
