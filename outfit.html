@@ -121,27 +121,70 @@
       <aside class="sidebar" id="sidebar-right">
         <div class="card">
           <div class="card-header sunset">🌈 기온 가이드</div>
-          <div class="card-body">
-            <!-- TODO: 기온 범위별 간략 가이드 (outfit.js) -->
-            <div class="list-row">
-              <span class="label">28°C 이상</span>
-              <span class="value highlight-sunset">민소매</span>
+          <div class="card-body guide-list">
+            <p class="guide-desc">요즘 날씨에 필수!</p>
+            <div class="guide-item guide-hot">
+              <div class="guide-icon"><span class="guide-icon-emoji">👕</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">28°C 이상</span>
+                <span class="guide-season">여름</span>
+                <span class="guide-clothes">민소매, 반소매, 반바지</span>
+              </div>
             </div>
-            <div class="list-row">
-              <span class="label">23 ~ 27°C</span>
-              <span class="value">반팔</span>
+            <div class="guide-item guide-warm">
+              <div class="guide-icon"><span class="guide-icon-emoji">👕</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">23 ~ 27°C</span>
+                <span class="guide-clothes">반소매, 얇은 셔츠, 반바지</span>
+              </div>
             </div>
-            <div class="list-row">
-              <span class="label">17 ~ 22°C</span>
-              <span class="value">얇은 가디건</span>
+            <div class="guide-item guide-mild">
+              <div class="guide-icon"><span class="guide-icon-emoji">👗</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">20 ~ 22°C</span>
+                <span class="guide-season">봄</span>
+                <span class="guide-clothes">블라우스, 긴소매</span>
+              </div>
             </div>
-            <div class="list-row">
-              <span class="label">12 ~ 16°C</span>
-              <span class="value">자켓 / 니트</span>
+            <div class="guide-item guide-spring">
+              <div class="guide-icon"><span class="guide-icon-emoji">🧥</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">17 ~ 19°C</span>
+                <span class="guide-season">봄</span>
+                <span class="guide-clothes">얇은 가디건·니트, 후드</span>
+              </div>
             </div>
-            <div class="list-row">
-              <span class="label">11°C 이하</span>
-              <span class="value">코트 / 패딩</span>
+            <div class="guide-item guide-autumn">
+              <div class="guide-icon"><span class="guide-icon-emoji">🧥</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">12 ~ 16°C</span>
+                <span class="guide-season">가을</span>
+                <span class="guide-clothes">재킷, 가디건, 니트</span>
+              </div>
+            </div>
+            <div class="guide-item guide-cool">
+              <div class="guide-icon"><span class="guide-icon-emoji">🧥</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">9 ~ 11°C</span>
+                <span class="guide-season">가을</span>
+                <span class="guide-clothes">트렌치 코트, 야상 점퍼</span>
+              </div>
+            </div>
+            <div class="guide-item guide-cold">
+              <div class="guide-icon"><span class="guide-icon-emoji">🧥</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">5 ~ 8°C</span>
+                <span class="guide-season">겨울</span>
+                <span class="guide-clothes">울 코트, 히트텍, 기모</span>
+              </div>
+            </div>
+            <div class="guide-item guide-freeze">
+              <div class="guide-icon"><span class="guide-icon-emoji">🧤</span></div>
+              <div class="guide-content">
+                <span class="guide-temp">4°C 이하</span>
+                <span class="guide-season">겨울</span>
+                <span class="guide-clothes">패딩, 두꺼운 코트, 목도리</span>
+              </div>
             </div>
           </div>
         </div>
