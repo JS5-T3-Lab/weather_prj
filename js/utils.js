@@ -29,3 +29,49 @@ function getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
+
+// 날씨 상태 → FontAwesome 아이콘 클래스 반환 (낮/밤 반영)
+function isDaytime(sunriseUnix, sunsetUnix) {
+  const now = Math.floor(Date.now() / 1000);
+  return now >= sunriseUnix && now < sunsetUnix;
+}
+
+function getWeatherIconClass(weatherMain, sunriseUnix, sunsetUnix) {
+  const daytime = isDaytime(sunriseUnix, sunsetUnix);
+  switch (weatherMain.toLowerCase()) {
+    case "clear":
+      return daytime ? "fa-sun" : "fa-moon";
+    case "clouds":
+      return daytime ? "fa-cloud-sun" : "fa-cloud-moon";
+    case "rain":
+      return "fa-cloud-rain";
+    case "snow":
+      return "fa-snowflake";
+    case "thunderstorm":
+      return "fa-bolt";
+    case "drizzle":
+      return "fa-cloud-showers-water";
+    default:
+      return daytime ? "fa-cloud-sun" : "fa-cloud-moon";
+  }
+}
+
+// 날씨 상태 → 이모지 반환
+function getWeatherEmoji(weatherMain) {
+  switch (weatherMain.toLowerCase()) {
+    case "clear":
+      return "☀️";
+    case "clouds":
+      return "☁️";
+    case "rain":
+      return "🌧️";
+    case "drizzle":
+      return "🌦️";
+    case "snow":
+      return "❄️";
+    case "thunderstorm":
+      return "⛈️";
+    default:
+      return "🌤️";
+  }
+}

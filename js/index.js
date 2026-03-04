@@ -12,34 +12,6 @@ const weatherIconEl = summaryCardBody.querySelector("i");
 const currentTempEl = summaryCardBody.querySelector("h2");
 const currentLocationEl = summaryCardBody.querySelector("p");
 
-// 낮/밤 여부 판단 함수 추가
-function isDaytime(sunriseUnix, sunsetUnix) {
-  const now = Math.floor(Date.now() / 1000); // 현재 시각 → Unix 초
-  return now >= sunriseUnix && now < sunsetUnix;
-}
-
-// 날씨 + 낮/밤 모두 반영하도록 수정
-function getWeatherIconClass(weatherMain, sunriseUnix, sunsetUnix) {
-  const daytime = isDaytime(sunriseUnix, sunsetUnix);
-
-  switch (weatherMain.toLowerCase()) {
-    case "clear":
-      return daytime ? "fa-sun" : "fa-moon"; // ☀️ vs 🌙
-    case "clouds":
-      return daytime ? "fa-cloud-sun" : "fa-cloud-moon"; // 낮 구름 vs 밤 구름
-    case "rain":
-      return "fa-cloud-rain";
-    case "snow":
-      return "fa-snowflake";
-    case "thunderstorm":
-      return "fa-bolt";
-    case "drizzle":
-      return "fa-cloud-showers-water";
-    default:
-      return daytime ? "fa-cloud-sun" : "fa-cloud-moon";
-  }
-}
-
 // 화면에 날씨 데이터를 업데이트하는 함수
 function updateWeatherUI(data) {
   // utils.js의 roundTemp 함수로 온도 반올림
