@@ -37,3 +37,19 @@ async function getForecastByCoords(lat, lon) {
   );
   return res.json();
 }
+
+// 대기질 정보 가져오기 (무료 API)
+async function getAirPollution(lat, lon) {
+  const res = await fetch(
+    `${BASE_URL}/air_pollution?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}`,
+  );
+  return res.json();
+}
+
+// 예보 데이터 좌표 기반으로 가져오기 (3시간 단위)
+async function getForecastByCoords(lat, lon) {
+  const res = await fetch(
+    `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}&units=metric&lang=kr`,
+  );
+  return res.json();
+}

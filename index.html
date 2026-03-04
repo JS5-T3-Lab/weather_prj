@@ -12,10 +12,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- 공통 스타일 -->
     <link rel="stylesheet" href="css/style.css" />
-    <!-- 이 페이지 전용 스타일 -->
     <link rel="stylesheet" href="css/index.css" />
+    <!-- Chart.js는 body 끝 script 태그 직전이 아닌 head에서 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
@@ -27,18 +26,18 @@
           <span>Weather Scanner</span>
         </a>
         <div class="desktop-menu">
-          <a href="index.html" class="nav-link">
-            <i class="fa-solid fa-house"></i> 홈
-          </a>
-          <a href="map.html" class="nav-link">
-            <i class="fa-solid fa-map-location-dot"></i> 날씨 지도
-          </a>
-          <a href="travel.html" class="nav-link">
-            <i class="fa-solid fa-plane"></i> 여행 날씨
-          </a>
-          <a href="outfit.html" class="nav-link">
-            <i class="fa-solid fa-shirt"></i> 옷차림 추천
-          </a>
+          <a href="index.html" class="nav-link"
+            ><i class="fa-solid fa-house"></i> 홈</a
+          >
+          <a href="map.html" class="nav-link"
+            ><i class="fa-solid fa-map-location-dot"></i> 날씨 지도</a
+          >
+          <a href="travel.html" class="nav-link"
+            ><i class="fa-solid fa-plane"></i> 여행 날씨</a
+          >
+          <a href="outfit.html" class="nav-link"
+            ><i class="fa-solid fa-shirt"></i> 옷차림 추천</a
+          >
         </div>
       </div>
     </nav>
@@ -47,6 +46,7 @@
     <div class="layout-wrapper">
       <!-- 왼쪽 사이드바 -->
       <aside class="sidebar" id="sidebar-left">
+        <!-- 현재 날씨 요약 (JS로 렌더링) -->
         <div class="card">
           <div class="card-header sky">🌤️ 현재 날씨 요약</div>
           <div class="card-body" style="text-align: center">
@@ -58,29 +58,30 @@
                 margin-bottom: 10px;
               "
             ></i>
-            <!-- TODO: JS로 실제 날씨 데이터 렌더링 (index.js) -->
             <h2 style="font-size: 2rem; margin-bottom: 5px">--°C</h2>
             <p style="color: var(--color-text-sub); font-size: 0.9rem">
               위치 로딩 중...
             </p>
           </div>
         </div>
+
+        <!-- 즐겨찾기 도시 (map.js의 localStorage → JS로 렌더링) -->
         <div class="card">
           <div class="card-header sky">⭐️ 즐겨찾는 도시</div>
-          <div class="card-body">
-            <!-- TODO: JS로 즐겨찾기 도시 목록 렌더링 (index.js) -->
-            <div class="list-row">
-              <span class="label">New York</span>
-              <span class="value highlight-sunset">--°C</span>
-            </div>
-            <div class="list-row">
-              <span class="label">London</span>
-              <span class="value">--°C</span>
-            </div>
-            <div class="list-row">
-              <span class="label">Tokyo</span>
-              <span class="value highlight-sunset">--°C</span>
-            </div>
+          <div class="card-body" id="favoriteCitiesBody">
+            <!-- index.js의 loadFavoriteCities()가 렌더링 -->
+            <p
+              style="
+                font-size: 0.85rem;
+                color: var(--color-text-sub);
+                text-align: center;
+                padding: 8px 0;
+              "
+            >
+              즐겨찾기한 도시가 없어요<br />
+              <a href="map.html" style="color: var(--color-sky)">날씨 지도</a
+              >에서 추가해보세요
+            </p>
           </div>
         </div>
       </aside>
@@ -100,20 +101,21 @@
           />
         </div>
 
-        <!-- TODO: 시간별 기온 + 강수량 그래프 카드 (index.js) -->
+        <!-- 시간별 날씨 그래프 -->
         <div class="card" style="margin-bottom: 20px">
           <div class="card-header sky">📊 시간별 날씨</div>
           <div class="card-body">
-            <!-- 탭 전환 버튼 -->
             <div class="chart-tab-wrap">
               <button class="chart-tab active" data-tab="temp">🌡️ 기온</button>
               <button class="chart-tab" data-tab="rain">🌧️ 강수량</button>
             </div>
-            <!-- 그래프 영역 -->
-            <div class="hourly-chart-area" id="hourlyChartArea"></div>
+            <div class="hourly-chart-area" id="hourlyChartArea">
+              <!-- index.js의 initHourlyChart()가 canvas를 삽입 -->
+            </div>
           </div>
         </div>
 
+        <!-- 대기질 정보 -->
         <div class="card" style="margin-bottom: 20px">
           <div class="card-header sky">💨 대기질 정보</div>
           <div class="card-body" id="airQualityBody">
@@ -123,72 +125,96 @@
             </div>
             <div class="aqi-grid">
               <div class="aqi-item">
-                <span class="aqi-name">PM10 미세먼지</span
-                ><span class="aqi-value" id="aqiPm10">-- ㎍/㎥</span>
+                <span class="aqi-name">PM10 미세먼지</span>
+                <span class="aqi-value" id="aqiPm10">-- ㎍/㎥</span>
               </div>
               <div class="aqi-item">
-                <span class="aqi-name">PM2.5 초미세먼지</span
-                ><span class="aqi-value" id="aqiPm25">-- ㎍/㎥</span>
+                <span class="aqi-name">PM2.5 초미세먼지</span>
+                <span class="aqi-value" id="aqiPm25">-- ㎍/㎥</span>
               </div>
               <div class="aqi-item">
-                <span class="aqi-name">CO 일산화탄소</span
-                ><span class="aqi-value" id="aqiCo">-- ㎍/㎥</span>
+                <span class="aqi-name">CO 일산화탄소</span>
+                <span class="aqi-value" id="aqiCo">-- ㎍/㎥</span>
               </div>
               <div class="aqi-item">
-                <span class="aqi-name">O₃ 오존</span
-                ><span class="aqi-value" id="aqiO3">-- ㎍/㎥</span>
+                <span class="aqi-name">O₃ 오존</span>
+                <span class="aqi-value" id="aqiO3">-- ㎍/㎥</span>
               </div>
               <div class="aqi-item">
-                <span class="aqi-name">NO₂ 이산화질소</span
-                ><span class="aqi-value" id="aqiNo2">-- ㎍/㎥</span>
+                <span class="aqi-name">NO₂ 이산화질소</span>
+                <span class="aqi-value" id="aqiNo2">-- ㎍/㎥</span>
               </div>
               <div class="aqi-item">
-                <span class="aqi-name">SO₂ 이산화황</span
-                ><span class="aqi-value" id="aqiSo2">-- ㎍/㎥</span>
+                <span class="aqi-name">SO₂ 이산화황</span>
+                <span class="aqi-value" id="aqiSo2">-- ㎍/㎥</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 날씨 피드 게시물 -->
-        <article class="feed-post">
-          <div class="post-top">
-            <div class="post-avatar">
-              <i class="fa-solid fa-building"></i>
-            </div>
-            <div class="post-info">
-              <div class="author">서울시 기상청</div>
-              <div class="time">10분 전</div>
-            </div>
-          </div>
-          <p class="post-text">
-            오늘 서울은 대체로 맑고 화창한 날씨가 이어지겠습니다. 야외 활동하기
-            아주 좋은 날씨입니다. 자외선이 약간 강할 수 있으니 선크림을
-            준비하세요!
-          </p>
-          <div class="post-weather-box">
-            <!-- TODO: JS로 실제 데이터 채우기 -->
-            <div class="temp">24°C</div>
-            <div>
-              <div style="font-weight: 600; font-size: 1.1rem">
-                맑음 (Clear)
+        <!-- 어제 이 시간과 비교 -->
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-header sky">📅 어제 이 시간과 비교</div>
+          <div class="card-body">
+            <div class="compare-grid">
+              <div class="compare-item">
+                <span class="compare-label">기온</span>
+                <div class="compare-row">
+                  <span class="compare-yesterday" id="cmpTempYest">-- °C</span>
+                  <i
+                    class="fa-solid fa-arrow-right"
+                    style="color: var(--color-border)"
+                  ></i>
+                  <span class="compare-today" id="cmpTempToday">-- °C</span>
+                  <span class="compare-diff" id="cmpTempDiff"></span>
+                </div>
               </div>
-              <div
-                style="
-                  font-size: 0.85rem;
-                  color: var(--color-text-sub);
-                  margin-top: 5px;
-                "
-              >
-                체감 25°C • 습도 45% • 풍속 3m/s
+              <div class="compare-item">
+                <span class="compare-label">체감온도</span>
+                <div class="compare-row">
+                  <span class="compare-yesterday" id="cmpFeelYest">-- °C</span>
+                  <i
+                    class="fa-solid fa-arrow-right"
+                    style="color: var(--color-border)"
+                  ></i>
+                  <span class="compare-today" id="cmpFeelToday">-- °C</span>
+                  <span class="compare-diff" id="cmpFeelDiff"></span>
+                </div>
+              </div>
+              <div class="compare-item">
+                <span class="compare-label">습도</span>
+                <div class="compare-row">
+                  <span class="compare-yesterday" id="cmpHumYest">-- %</span>
+                  <i
+                    class="fa-solid fa-arrow-right"
+                    style="color: var(--color-border)"
+                  ></i>
+                  <span class="compare-today" id="cmpHumToday">-- %</span>
+                  <span class="compare-diff" id="cmpHumDiff"></span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="post-actions">
-            <span><i class="fa-regular fa-heart"></i> 좋아요</span>
-            <span><i class="fa-regular fa-bookmark"></i> 저장</span>
+        </div>
+
+        <!-- 1주일 날씨 예보 -->
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-header sky">📆 1주일 날씨 예보</div>
+          <div class="card-body" id="weeklyForecastBody">
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="news-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
           </div>
-        </article>
+        </div>
       </main>
 
       <!-- 오른쪽 사이드바 -->
@@ -196,7 +222,6 @@
         <div class="card">
           <div class="card-header sunset">🔥 실시간 날씨 트렌드</div>
           <div class="card-body">
-            <!-- TODO: JS로 트렌드 태그 렌더링 -->
             <div class="list-row"><span class="label">#초여름날씨</span></div>
             <div class="list-row"><span class="label">#자외선주의보</span></div>
             <div class="list-row">
@@ -223,27 +248,26 @@
 
     <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
     <nav class="bottom-nav">
-      <a href="index.html" class="nav-link">
-        <i class="fa-solid fa-house"></i>홈
-      </a>
-      <a href="map.html" class="nav-link">
-        <i class="fa-solid fa-map-location-dot"></i>지도
-      </a>
-      <a href="travel.html" class="nav-link">
-        <i class="fa-solid fa-plane"></i>여행
-      </a>
-      <a href="outfit.html" class="nav-link">
-        <i class="fa-solid fa-shirt"></i>옷차림
-      </a>
+      <a href="index.html" class="nav-link"
+        ><i class="fa-solid fa-house"></i>홈</a
+      >
+      <a href="map.html" class="nav-link"
+        ><i class="fa-solid fa-map-location-dot"></i>지도</a
+      >
+      <a href="travel.html" class="nav-link"
+        ><i class="fa-solid fa-plane"></i>여행</a
+      >
+      <a href="outfit.html" class="nav-link"
+        ><i class="fa-solid fa-shirt"></i>옷차림</a
+      >
     </nav>
 
-    <!-- config.js를 먼저 불러와야 API_KEY를 사용할 수 있음 -->
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/cities.js"></script>
     <script src="js/index.js"></script>
 
-    <!-- 현재 페이지 네비게이션 활성화 -->
     <script>
       document.querySelectorAll(".nav-link").forEach((link) => {
         if (link.getAttribute("href") === "index.html") {

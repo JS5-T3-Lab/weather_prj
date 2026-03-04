@@ -82,7 +82,207 @@
   cursor: pointer;
 }
 
-/* TODO: 시간별 날씨 그래프 영역 (강기범 구현 예정) */
-.hourly-chart-area {
-  /* 여기에 그래프 스타일 추가 */
+/* =============================================
+   시간별 날씨 그래프
+   ============================================= */
+.chart-tab-wrap {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chart-tab {
+  padding: 6px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-text-sub);
+  transition: 0.2s;
+}
+
+.chart-tab:hover {
+  border-color: var(--color-sky);
+  color: var(--color-sky);
+}
+
+.chart-tab.active {
+  background: var(--color-sky);
+  border-color: var(--color-sky);
+  color: white;
+}
+
+#hourlyChartArea {
+  position: relative;
+  height: 240px; /* 높이 증가 */
+  width: 100%; /* 전체 너비 사용 */
+}
+/* canvas가 부모를 꽉 채우도록 */
+#hourlyChartArea canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* =============================================
+   대기질 정보
+   ============================================= */
+.aqi-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.aqi-grade {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.aqi-label {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+}
+
+.aqi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.aqi-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.aqi-name {
+  font-size: 0.75rem;
+  color: var(--color-text-sub);
+}
+
+.aqi-value {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+/* =============================================
+   어제 날씨 비교
+   ============================================= */
+.compare-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compare-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.compare-label {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  font-weight: 500;
+}
+
+.compare-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.compare-yesterday {
+  font-size: 0.95rem;
+  color: var(--color-text-sub);
+  min-width: 52px;
+}
+
+.compare-today {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  min-width: 52px;
+}
+
+.compare-diff {
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 36px;
+}
+
+/* =============================================
+   1주일 날씨 예보
+   ============================================= */
+.weekly-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.weekly-row:last-child {
+  border-bottom: none;
+}
+
+.weekly-day {
+  font-size: 0.88rem;
+  color: var(--color-text-sub);
+  min-width: 80px;
+}
+
+.weekly-icon {
+  font-size: 1.2rem;
+  min-width: 28px;
+  text-align: center;
+}
+
+.weekly-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  flex: 1;
+}
+
+.weekly-temp {
+  display: flex;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.weekly-max {
+  color: var(--color-sunset);
+}
+
+.weekly-min {
+  color: var(--color-sky);
+}
+
+/* =============================================
+   반응형 (모바일) 추가분
+   ============================================= */
+@media (max-width: 900px) {
+  /* 대기질 그리드: 3열 → 2열 */
+  .aqi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 주간 예보: 날짜 텍스트 줄임 */
+  .weekly-day {
+    min-width: 60px;
+    font-size: 0.82rem;
+  }
+
+  .weekly-desc {
+    display: none; /* 모바일에서 설명 텍스트 숨김 */
+  }
 }
