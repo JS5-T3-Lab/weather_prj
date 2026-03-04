@@ -14,7 +14,10 @@
     var map = { "01d": "fa-sun", "01n": "fa-moon", "02d": "fa-cloud-sun", "02n": "fa-cloud-moon", "03d": "fa-cloud", "03n": "fa-cloud", "04d": "fa-cloud", "04n": "fa-cloud", "09d": "fa-cloud-rain", "09n": "fa-cloud-rain", "10d": "fa-cloud-rain", "10n": "fa-cloud-rain", "11d": "fa-bolt", "11n": "fa-bolt", "13d": "fa-snowflake", "13n": "fa-snowflake", "50d": "fa-fog", "50n": "fa-fog" };
     return map[icon] || "fa-cloud-sun";
   }
-  var Utils = typeof window.Utils !== "undefined" ? window.Utils : { formatTemp: formatTemp, getWeatherIconClass: getWeatherIconClass };
+  var Utils = {
+    formatTemp: (window.Utils && typeof window.Utils.formatTemp === "function") ? window.Utils.formatTemp : formatTemp,
+    getWeatherIconClass: (window.Utils && typeof window.Utils.getWeatherIconClass === "function") ? window.Utils.getWeatherIconClass : getWeatherIconClass
+  };
 
   /**
    * 기온에 맞는 옷차림 정보 반환 (기온 가이드 기준)
@@ -106,25 +109,27 @@
   }
 
   function setWeatherCard(weather) {
-    if (!weatherCard) return;
-    const iconClass = Utils.getWeatherIconClass(weather.icon);
+    if (!weatherCard || !weather) return;
+    const iconClass = Utils.getWeatherIconClass(weather.icon || "");
+    var city = weather.city != null ? String(weather.city) : "";
+    var description = weather.description != null ? String(weather.description) : "";
     weatherCard.innerHTML = `
       <div class="weather-current-inner">
         <div class="weather-current-main">
           <i class="fa-solid ${iconClass} weather-current-icon"></i>
           <div>
             <span class="weather-current-temp">${Utils.formatTemp(weather.temp)}</span>
-            <span class="weather-current-city">${weather.city}</span>
+            <span class="weather-current-city">${city}</span>
           </div>
         </div>
-        <p class="weather-current-desc">${weather.description}</p>
+        <p class="weather-current-desc">${description}</p>
         <p class="weather-current-feels">체감 ${Utils.formatTemp(weather.feels_like)}</p>
       </div>
     `;
   }
 
   function setOutfitCard(weather) {
-    if (!outfitCard) return;
+    if (!outfitCard || !weather) return;
     const info = getOutfitByTemp(weather.feels_like);
     outfitCard.innerHTML = `
       <div class="outfit-recommend-inner">
@@ -150,7 +155,7 @@
 
   function setError(message) {
     if (weatherCard) {
-      weatherCard.innerHTML = `<p class="outfit-error"><i class="fa-solid fa-location-crosshairs"></i> ${message}</p>`;
+      weatherCard.innerHTML = `<p class="outfit-error"><i class="fa-solid fa-location-dot"></i> ${message}</p>`;
     }
     if (outfitCard) {
       outfitCard.innerHTML = `<p class="outfit-error">${message}<br><small>위치 권한을 허용하거나 브라우저 설정을 확인해 주세요.</small></p>`;
