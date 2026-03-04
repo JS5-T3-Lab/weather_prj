@@ -318,6 +318,40 @@ async function loadFavoriteCities() {
   }
 }
 
+// ===== 실시간 날씨 트랜드 =====
+function initCurrentTrend(weatherData) {
+  let temp = ""
+  let humi = ""
+  let cloud = ""
+  let visi = ""
+  if (weatherData.main.temp < 5){
+    temp = "#히터없나요"
+  } else if (weatherData.main.temp > 35) {
+    temp = "#열사병걸릴는중"
+  }
+  if (temp !== ""){
+    trendHTML = `<div class="list-row"><span class="label">${temp}</span></div>`
+  }
+
+  if (weatherData.main.humidity > 80) {
+    humi = "#목용탕같은날씨"
+    trendHTML += `<div class="list-row"><span class="label">${humi}</span></div>`
+  }
+
+  if (weatherData.clouds.all > 80) {
+    cloud = "#태양퇴근함"
+    trendHTML += `<div class="list-row"><span class="label">${cloud}</span></div>`
+  }
+
+  if (weatherData.visibility < 1000) {
+    visi = "#앞이안보여"
+    trendHTML += `<div class="list-row"><span class="label">${visi}</span></div>`
+  }
+
+
+  const trend_content = document.querySelector("#sidebar-right .card .card-body").innerHTML = trendHTML;
+}
+
 // ===== 메인 초기화 =====
 async function initCurrentWeather() {
   let lat, lon;
@@ -343,6 +377,7 @@ async function initCurrentWeather() {
     initYesterdayCompare(lat, lon, weatherData);
     initWeeklyForecast(lat, lon);
     loadFavoriteCities();
+    initCurrentTrend(weatherData);
   } catch (error) {
     currentLocationEl.textContent = "날씨 정보를 불러오지 못했습니다.";
     console.error("날씨 API 호출 실패", error);
