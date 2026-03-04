@@ -32,6 +32,7 @@ function removeFavorite(enName) {
 const map = L.map("weatherMap").setView([36.5, 127.5], 7); // 대한민국 중심
 
 // 지도 초기화
+
 // 기본 지도 타일
 const defaultTile = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
