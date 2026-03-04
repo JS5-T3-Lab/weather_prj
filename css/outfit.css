@@ -11,12 +11,220 @@
   color: var(--color-text-main);
 }
 
-/* TODO: 현재 위치 날씨 카드 (최지유 구현 예정) */
+/* 현재 위치 날씨 카드 */
 .weather-compare-card {
-  /* 어제 날씨 vs 오늘 날씨 비교 영역 */
+  flex-direction: column;
+  align-items: stretch;
 }
 
-/* TODO: 기온별 옷차림 추천 카드 (최지유 구현 예정) */
+.weather-current-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-current-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-current-icon {
+  font-size: 2rem;
+  color: var(--color-sunset);
+}
+
+.weather-current-temp {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  display: block;
+}
+
+.weather-current-city {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+}
+
+.weather-current-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+  margin: 0;
+}
+
+.weather-current-feels {
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  margin: 0;
+}
+
+/* 기온별 옷차림 추천 카드 */
 .outfit-recommend-card {
-  /* 기온 범위 별 옷차림 이미지 + 텍스트 */
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.outfit-recommend-inner {
+  text-align: center;
+  padding: 16px;
+}
+
+.outfit-recommend-icon-wrap {
+  margin-bottom: 12px;
+}
+
+.outfit-recommend-icon {
+  font-size: 3rem;
+  line-height: 1;
+  display: inline-block;
+  letter-spacing: 0.15em;
+}
+
+@media (min-width: 768px) {
+  .outfit-recommend-icon {
+    font-size: 4rem;
+  }
+}
+
+.outfit-recommend-temp {
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  margin: 0 0 4px;
+}
+
+.outfit-recommend-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text-main);
+  margin: 0 0 8px;
+}
+
+.outfit-recommend-clothes {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.outfit-recommend-tip {
+  font-size: 0.9rem;
+  color: var(--color-sunset, #e85d04);
+  margin: 12px 0 0;
+  font-weight: 500;
+}
+
+.outfit-loading,
+.outfit-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-direction: column;
+  min-height: 80px;
+  margin: 0;
+  color: var(--color-text-sub);
+}
+
+.outfit-error small {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* ===== 기온 가이드 (오른쪽 사이드바) ===== */
+.guide-list {
+  padding: 12px 0 !important;
+}
+
+.guide-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  margin-bottom: 12px;
+  padding: 0 16px;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: background 0.2s;
+}
+
+.guide-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.guide-icon {
+  flex-shrink: 0;
+  min-width: 44px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.guide-icon-emoji {
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.guide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.guide-temp {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+}
+
+.guide-season {
+  font-size: 0.7rem;
+  color: var(--color-text-sub);
+}
+
+.guide-clothes {
+  font-size: 0.78rem;
+  color: var(--color-text-sub);
+  line-height: 1.35;
+}
+
+/* 기온대별 아이콘 배경 (따뜻함 → 추움 그라데이션) */
+.guide-hot .guide-icon {
+  background: rgba(255, 140, 66, 0.2);
+}
+
+.guide-warm .guide-icon {
+  background: rgba(251, 176, 59, 0.25);
+}
+
+.guide-mild .guide-icon {
+  background: rgba(254, 227, 127, 0.3);
+}
+
+.guide-spring .guide-icon {
+  background: rgba(144, 238, 144, 0.3);
+}
+
+.guide-autumn .guide-icon {
+  background: rgba(176, 196, 222, 0.4);
+}
+
+.guide-cool .guide-icon {
+  background: rgba(147, 197, 253, 0.35);
+}
+
+.guide-cold .guide-icon {
+  background: rgba(129, 212, 250, 0.35);
+}
+
+.guide-freeze .guide-icon {
+  background: rgba(187, 222, 251, 0.4);
 }
