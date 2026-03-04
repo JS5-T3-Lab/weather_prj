@@ -1,5 +1,5 @@
 /**
- * 옷차림 추천 페이지 - UI 갱신 (API 호출 없음)
+ * 옷차림 추천 페이지 - 현재 위치 날씨 조회 및 UI 갱신
  */
 (function () {
   const leftCardValues = document.querySelectorAll("#sidebar-left .list-row .value");
@@ -165,8 +165,42 @@
   }
 
   function run() {
-    // API/위치 호출 없음: 플레이스홀더 유지 (연동 시 setLoading → API 호출 → setWeatherCard/setOutfitCard 호출)
-    // 현재는 HTML 기본 안내 문구 그대로 표시
+    setLoading();
+
+    if (!navigator.geolocation) {
+      setError("이 브라우저는 위치 기능을 지원하지 않습니다.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async function (pos) {
+        var lat = pos.coords.latitude;
+        var lon = pos.coords.longitude;
+        try {
+          var data = await getCurrentWeatherByCoords(lat, lon);
+          if (!data || data.cod !== 200) {
+            setError(data && data.message ? data.message : "날씨를 가져오지 못했습니다.");
+            return;
+          }
+          var weather = {
+            temp: data.main.temp,
+            feels_like: data.main.feels_like,
+            icon: data.weather && data.weather[0] ? data.weather[0].icon : "",
+            description: data.weather && data.weather[0] ? data.weather[0].description : "",
+            city: data.name || ""
+          };
+          setLeftSidebar(weather.temp, weather.feels_like);
+          setWeatherCard(weather);
+          setOutfitCard(weather);
+        } catch (e) {
+          setError(e.message || "날씨를 가져오지 못했습니다.");
+        }
+      },
+      function () {
+        setError("위치를 사용할 수 없습니다.");
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
   }
 
   if (document.readyState === "loading") {
