@@ -29,3 +29,11 @@ async function getForecast(city) {
   );
   return res.json();
 }
+
+// 시간별 예보(3시간)
+async function getForecastByCoords(lat, lon) {
+  const res = await fetch(
+    `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.API_KEY}&units=metric&lang=kr`,
+  );
+  return res.json();
+}

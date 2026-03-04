@@ -65,11 +65,6 @@ async function initCurrentWeather() {
   }
 }
 
-// 페이지가 로드되면 날씨 초기화 함수 실행
-document.addEventListener("DOMContentLoaded", () => {
-  initCurrentWeather();
-});
-
 // TODO: 검색창
 const searchInput = document.getElementById("searchInput");
 
@@ -92,5 +87,75 @@ async function loadCityWeather(city) {
 }
 
 // TODO: 시간별 기온/강수량 그래프
+let hourlyChart = null;
+
+async function initHourlyChart(lat, lon) {
+  const forecast = await getForecastByCoords(lat, lon);
+
+  // 3시간단위 8개, 24시간
+  const items = forecast.list.slice(0, 8);
+  const labels = items.map((item) => formatHour(item.dt));
+  const temps = items.map((item) => roundTemp(item.main.temp));
+  const rains = items.map((item) => item.rain?.["3h"] ?? 0);
+
+  const canvas = document.createElement("canvas");
+  canvas.id = "hourlyCanvas";
+  const area = document.getElementById("hourlyChartArea");
+  area.innerHTML = "";
+  area.appendChild(canvas);
+
+  // 기존 차트 제거 후 재생성
+  if (hourlyChart) hourlyChart.destroy();
+
+  hourlyChart = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          type: "line",
+          label: "기온 (°C)",
+          data: temps,
+          borderColor: "#ff6b35",
+          backgroundColor: "rgba(255,107,53,0.1)",
+          yAxisID: "yTemp",
+          tension: 0.4,
+          pointRadius: 4,
+        },
+        {
+          type: "bar",
+          label: "강수량 (mm)",
+          data: rains,
+          backgroundColor: "rgba(77,168,218,0.5)",
+          yAxisID: "yRain",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: "index", intersect: false },
+      plugins: { legend: { position: "top" } },
+      scales: {
+        yTemp: {
+          type: "linear",
+          position: "left",
+          title: { display: true, text: "°C" },
+        },
+        yRain: {
+          type: "linear",
+          position: "right",
+          title: { display: true, text: "mm" },
+          grid: { drawOnChartArea: false },
+          min: 0,
+        },
+      },
+    },
+  });
+}
 // TODO: 즐겨찾기 도시 날씨
 // TODO: 검색 기능
+
+// 페이지가 로드되면 날씨 초기화 함수 실행
+document.addEventListener("DOMContentLoaded", () => {
+  initCurrentWeather();
+});

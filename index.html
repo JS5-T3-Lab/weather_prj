@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <!-- 이 페이지 전용 스타일 -->
     <link rel="stylesheet" href="css/index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <!-- ===== 상단 네비게이션 ===== -->
@@ -102,17 +103,14 @@
         <!-- TODO: 시간별 기온 + 강수량 그래프 카드 (index.js) -->
         <div class="card" style="margin-bottom: 20px">
           <div class="card-header sky">📊 시간별 날씨</div>
-          <div
-            class="card-body hourly-chart-area"
-            style="
-              min-height: 180px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: var(--color-text-sub);
-            "
-          >
-            <span>시간별 기온/강수량 그래프가 들어갈 영역입니다</span>
+          <div class="card-body">
+            <!-- 탭 전환 버튼 -->
+            <div class="chart-tab-wrap">
+              <button class="chart-tab active" data-tab="temp">🌡️ 기온</button>
+              <button class="chart-tab" data-tab="rain">🌧️ 강수량</button>
+            </div>
+            <!-- 그래프 영역 -->
+            <div class="hourly-chart-area" id="hourlyChartArea"></div>
           </div>
         </div>
 
