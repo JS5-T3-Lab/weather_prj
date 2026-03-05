@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Scanner - 여행 날씨</title>
+    <title>Weatherman - �뿬�뻾 �궇�뵪</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -12,13 +12,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- 공통 스타일 -->
+    <!-- 怨듯넻 �뒪����씪 -->
     <link rel="stylesheet" href="css/style.css" />
-    <!-- 이 페이지 전용 스타일 -->
+    <!-- �씠 �럹�씠吏� �쟾�슜 �뒪����씪 -->
     <link rel="stylesheet" href="css/travel.css" />
   </head>
   <body>
-    <!-- ===== 상단 네비게이션 ===== -->
+    <!-- ===== �긽�떒 �꽕鍮꾧쾶�씠�뀡 ===== -->
     <nav class="top-nav">
       <div class="nav-container">
         <a href="index.html" class="logo">
@@ -27,53 +27,75 @@
         </a>
         <div class="desktop-menu">
           <a href="index.html" class="nav-link">
-            <i class="fa-solid fa-house"></i> 홈
+            <i class="fa-solid fa-house"></i> �솃
           </a>
           <a href="map.html" class="nav-link">
-            <i class="fa-solid fa-map-location-dot"></i> 날씨 지도
+            <i class="fa-solid fa-map-location-dot"></i> �궇�뵪 吏��룄
           </a>
           <a href="travel.html" class="nav-link">
-            <i class="fa-solid fa-plane"></i> 여행 날씨
+            <i class="fa-solid fa-plane"></i> �뿬�뻾 �궇�뵪
           </a>
           <a href="outfit.html" class="nav-link">
-            <i class="fa-solid fa-shirt"></i> 옷차림 추천
+            <i class="fa-solid fa-shirt"></i> �샆李⑤┝ 異붿쿇
           </a>
         </div>
       </div>
     </nav>
 
-    <!-- ===== 본문 레이아웃 ===== -->
+    <!-- ===== 蹂몃Ц �젅�씠�븘�썐 ===== -->
     <div class="layout-wrapper">
-      <!-- 왼쪽 사이드바 -->
+      <!-- �쇊履� �궗�씠�뱶諛� -->
       <aside class="sidebar" id="sidebar-left">
+
         <div class="card">
-          <div class="card-header sky">🏃 활동 선택</div>
+          <div class="card-header sky">�윆� �솢�룞 �꽑�깮</div>
           <div class="card-body">
-            <!-- TODO: JS로 활동 선택 버튼 렌더링 (travel.js) -->
+            <!-- TODO: JS濡� �솢�룞 �꽑�깮 踰꾪듉 �젋�뜑留� (travel.js) -->
             <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              활동 버튼이 들어갈 영역입니다.<br />
-              (골프, 낚시, 등산, 해변, 캠핑, 드라이브, 야외구기)
+              �솢�룞�쓣 �꽑�깮�븯�꽭�슂.<br />
+              (怨⑦봽, �굾�떆, �벑�궛, �빐蹂�, 罹좏븨, �뱶�씪�씠釉�, �빞�쇅援ш린)
             </p>
+            <div class="form-group"> <!-- Activity �뱶濡��떎�슫 臾띠쓬 -->
+            <label class="label" for="activity-select">Activity</label> <!-- �뱶濡��떎�슫 �씪踰� -->
+            <select id="activity-select" class="input"> <!-- �솢�룞 �꽑�깮 �뱶濡��떎�슫 -->
+              <option value="">Select an activity</option> <!-- 湲곕낯 �븞�궡 �샃�뀡 -->
+              <option value="Fishing">Fishing</option> <!-- �꽑�깮吏� 1 -->
+              <option value="Hiking">Hiking</option> <!-- �꽑�깮吏� 2 -->
+              <option value="Running">Running</option> <!-- �꽑�깮吏� 3 -->
+            </select>
+          </div>
+
           </div>
         </div>
+        
         <div class="card">
-          <div class="card-header sky">📍 지역 선택</div>
+          <div class="card-header sky">�윋� 吏��뿭 �꽑�깮</div>
           <div class="card-body">
-            <!-- TODO: JS로 도시 선택 드롭다운 렌더링 (travel.js) -->
+            <!-- TODO: JS濡� �룄�떆 �꽑�깮 �뱶濡��떎�슫 �젋�뜑留� (travel.js) -->
             <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              국내외 주요 도시 선택 영역입니다.
+              �뿬�뻾 怨꾪쉷以묒씤 �룄�떆瑜� �꽑�깮�븯�꽭�슂.
             </p>
+            <div class="form-group"> <!-- Destination �뱶濡��떎�슫 臾띠쓬 -->
+            <label class="label" for="destination-select">Destination</label> <!-- �뱶濡��떎�슫 �씪踰� -->
+            <select id="destination-select" class="input"> <!-- �뿬�뻾吏� �꽑�깮 �뱶濡��떎�슫 -->
+              <option value="">Select a destination</option> <!-- 湲곕낯 �븞�궡 �샃�뀡 -->
+              <option value="Seoul">Seoul</option> <!-- �꽑�깮吏� 1 -->
+              <option value="Osaka">Osaka</option> <!-- �꽑�깮吏� 2 -->
+              <option value="Jeju">Jeju</option> <!-- �꽑�깮吏� 3 -->
+            </select>
+          </div>
+
           </div>
         </div>
       </aside>
 
-      <!-- 중앙 메인 콘텐츠 -->
+      <!-- 以묒븰 硫붿씤 肄섑뀗痢� -->
       <main class="main-content">
-        <h2 class="page-title">✈️ 여행 & 취미활동 날씨</h2>
+        <h2 class="page-title">�쐢截� �뿬�뻾 & 痍⑤�명솢�룞 �궇�뵪</h2>
 
-        <!-- TODO: 날짜 선택 (travel.js) -->
+        <!-- TODO: �궇吏� �꽑�깮 (travel.js) -->
         <div class="card" style="margin-bottom: 20px">
-          <div class="card-header sky">📅 날짜 선택 (8일 이내)</div>
+          <div class="card-header sky">�윋� �궇吏� �꽑�깮 (8�씪 �씠�궡)</div>
           <div
             class="card-body date-selector"
             style="
@@ -83,13 +105,33 @@
               color: var(--color-text-sub);
             "
           >
-            <span>날짜 선택 UI가 들어갈 영역입니다</span>
+            <div class="form-group"> <!-- Check-in �궇吏� �엯�젰 臾띠쓬 -->
+            <label class="label" for="checkin-input">Check-in</label> <!-- �씪踰� -->
+            <input id="checkin-input" class="input" type="date" /> <!-- �궇吏� �꽑�깮 input -->
+
+                      <div class="form-group"> <!-- Check-out �궇吏� �엯�젰 臾띠쓬 -->
+            <label class="label" for="checkout-input">Check-out</label> <!-- �씪踰� -->
+            <input id="checkout-input" class="input" type="date" /> <!-- �궇吏� �꽑�깮 input -->
+            </div>
+
+          </div>
+
           </div>
         </div>
+        <!-- ===== 踰꾪듉 �쁺�뿭 ===== -->
+        <div class="form-row actions"> <!-- 踰꾪듉�뱾�쓣 �븳 以꾨줈 諛곗튂 -->
+          <button id="submit-btn" class="btn primary" type="submit">Search</button> <!-- 寃��깋 踰꾪듉(�뤌 submit) -->
+          <button id="reset-btn" class="btn ghost" type="button">Reset</button> <!-- 珥덇린�솕 踰꾪듉(JS媛� 媛� 珥덇린�솕) -->
+        </div>
 
-        <!-- TODO: 검색 결과 테이블 (travel.js) -->
+                <!-- ===== 硫붿떆吏� 異쒕젰 �쁺�뿭(�뿉�윭/�꽦怨� �븞�궡) ===== -->
+        <div id="message-area" class="message-area" aria-live="polite"></div>
+        <!-- aria-live: �솕硫� �궘�룆湲곌�� 硫붿떆吏� 蹂��솕瑜� �씫�뼱二쇰룄濡� �븿(�젒洹쇱꽦) -->
+
+
+        <!-- TODO: 寃��깋 寃곌낵 �뀒�씠釉� (travel.js) -->
         <div class="card">
-          <div class="card-header sunset">📋 활동별 날씨 정보</div>
+          <div class="card-header sunset">�윋� �솢�룞蹂� �궇�뵪 �젙蹂�</div>
           <div
             class="card-body result-table"
             style="
@@ -109,19 +151,26 @@
                   color: var(--color-sky);
                 "
               ></i>
-              <p>활동과 지역, 날짜를 선택하면<br />날씨 정보가 표시됩니다.</p>
+               <div id="result-meta" class="result-meta"></div> <!-- JS媛� "�룄�떆, 湲곌컙, �솢�룞" �뀓�뒪�듃 �꽔�쓬 -->
+                  <div id="loading" class="loading hidden">Loading forecast���</div> <!-- 濡쒕뵫 �몴�떆(湲곕낯 hidden) -->
+            <div id="results" class="results"></div> <!-- 罹섎┛�뜑 二쇰퀎 移대뱶�뱾�씠 JS濡� �뱾�뼱媛� -->
+            
+              <p>테스트테스트<br />�궇�뵪 �젙蹂닿�� �몴�떆�맗�땲�떎.</p>
               <p style="font-size: 0.8rem; margin-top: 8px">
-                (강수량, 자외선, 풍속 등)
+                (媛뺤닔�웾, �옄�쇅�꽑, �뭾�냽 �벑)
               </p>
             </div>
           </div>
         </div>
       </main>
+      
 
-      <!-- 오른쪽 사이드바 -->
+      <!-- �삤瑜몄そ �궗�씠�뱶諛� -->
       <aside class="sidebar" id="sidebar-right">
         <div class="card">
-          <div class="card-header sunset">💡 활동별 날씨 팁</div>
+          <div class="card-header sunset">�윊� �솢�룞蹂� �궇�뵪 �똻</div>
+           
+
           <div
             class="card-body"
             style="
@@ -130,26 +179,26 @@
               color: var(--color-text-sub);
             "
           >
-            <!-- TODO: JS로 선택된 활동에 맞는 팁 렌더링 (travel.js) -->
-            활동을 선택하면 맞춤 날씨 팁이 표시됩니다.
+            <!-- TODO: JS濡� �꽑�깮�맂 �솢�룞�뿉 留욌뒗 �똻 �젋�뜑留� (travel.js) -->
+            �솢�룞�쓣 �꽑�깮�븯硫� 留욎땄 �궇�뵪 �똻�씠 �몴�떆�맗�땲�떎.
           </div>
         </div>
       </aside>
     </div>
 
-    <!-- ===== 하단 네비게이션 (모바일 전용) ===== -->
+    <!-- ===== �븯�떒 �꽕鍮꾧쾶�씠�뀡 (紐⑤컮�씪 �쟾�슜) ===== -->
     <nav class="bottom-nav">
       <a href="index.html" class="nav-link">
-        <i class="fa-solid fa-house"></i>홈
+        <i class="fa-solid fa-house"></i>�솃
       </a>
       <a href="map.html" class="nav-link">
-        <i class="fa-solid fa-map-location-dot"></i>지도
+        <i class="fa-solid fa-map-location-dot"></i>吏��룄
       </a>
       <a href="travel.html" class="nav-link">
-        <i class="fa-solid fa-plane"></i>여행
+        <i class="fa-solid fa-plane"></i>�뿬�뻾
       </a>
       <a href="outfit.html" class="nav-link">
-        <i class="fa-solid fa-shirt"></i>옷차림
+        <i class="fa-solid fa-shirt"></i>�샆李⑤┝
       </a>
     </nav>
 
@@ -158,7 +207,7 @@
     <script src="js/utils.js"></script>
     <script src="js/travel.js"></script>
 
-    <!-- 현재 페이지 네비게이션 활성화 -->
+    <!-- �쁽�옱 �럹�씠吏� �꽕鍮꾧쾶�씠�뀡 �솢�꽦�솕 -->
     <script>
       document.querySelectorAll(".nav-link").forEach((link) => {
         if (link.getAttribute("href") === "travel.html") {
