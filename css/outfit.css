@@ -34,6 +34,12 @@
   color: var(--color-sunset);
 }
 
+.weather-current-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+  display: inline-block;
+}
+
 .weather-current-temp {
   font-size: 1.5rem;
   font-weight: 700;

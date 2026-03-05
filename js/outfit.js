@@ -19,6 +19,18 @@
     getWeatherIconClass: (window.Utils && typeof window.Utils.getWeatherIconClass === "function") ? window.Utils.getWeatherIconClass : getWeatherIconClass
   };
 
+  // 날씨 상태 → 이모지 (utils.js getWeatherEmoji와 동일 매핑)
+  function getWeatherEmojiLocal(weatherMain) {
+    var m = String(weatherMain || "").toLowerCase();
+    if (m === "clear") return "☀️";
+    if (m === "clouds") return "☁️";
+    if (m === "rain") return "🌧️";
+    if (m === "drizzle") return "🌦️";
+    if (m === "snow") return "❄️";
+    if (m === "thunderstorm") return "⛈️";
+    return "🌤️";
+  }
+
   /**
    * 기온에 맞는 옷차림 정보 반환 (기온 가이드 기준)
    * @param {number} temp - 기온 (체감온도 권장)
@@ -110,13 +122,13 @@
 
   function setWeatherCard(weather) {
     if (!weatherCard || !weather) return;
-    const iconClass = Utils.getWeatherIconClass(weather.icon || "");
     var city = weather.city != null ? String(weather.city) : "";
     var description = weather.description != null ? String(weather.description) : "";
+    var emoji = getWeatherEmojiLocal(weather.main);
     weatherCard.innerHTML = `
       <div class="weather-current-inner">
         <div class="weather-current-main">
-          <i class="fa-solid ${iconClass} weather-current-icon"></i>
+          <span class="weather-current-icon weather-current-emoji" aria-hidden="true">${emoji}</span>
           <div>
             <span class="weather-current-temp">${Utils.formatTemp(weather.temp)}</span>
             <span class="weather-current-city">${city}</span>
@@ -182,12 +194,18 @@
             setError(data && data.message ? data.message : "날씨를 가져오지 못했습니다.");
             return;
           }
+          var cityName = data.name || "";
+          if (typeof findCityByEn === "function") {
+            var cityObj = findCityByEn(cityName);
+            if (cityObj && cityObj.ko) cityName = cityObj.ko;
+          }
           var weather = {
             temp: data.main.temp,
             feels_like: data.main.feels_like,
             icon: data.weather && data.weather[0] ? data.weather[0].icon : "",
+            main: data.weather && data.weather[0] ? data.weather[0].main : "",
             description: data.weather && data.weather[0] ? data.weather[0].description : "",
-            city: data.name || ""
+            city: cityName
           };
           setLeftSidebar(weather.temp, weather.feels_like);
           setWeatherCard(weather);
