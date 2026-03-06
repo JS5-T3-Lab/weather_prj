@@ -1,13 +1,4 @@
-/* =============================================
-   travel.js - ?��?��/취�?�활?�� ?��?�� ?��?���?? 로직
-   ?��?��: 강성�??
-   ============================================= */
 
-// TODO: ?��?�� ?��?�� 버튼 ?��?���?? (골프, ?��?��, ?��?��, ?���??, 캠핑, ?��?��?���??, ?��?��구기)
-// TODO: ?��?�� ?��?�� ?���???��?�� ?��?���??
-// TODO: ?���?? ?��?�� UI (8?�� ?��?��)
-// TODO: ?��?���?? ?��?�� 결과 ?��?���?? ?��?���?? (강수?��, ?��?��?�� ?��)
-Mainjs
 /************************************************************
  * Travel Weather Planner (MVP)
  * - Uses OpenWeather /data/2.5/forecast ONLY (3-hour steps)
@@ -20,8 +11,7 @@ Mainjs
 /* =========================
    0) API Settings
    ========================= */
-
- // 
+const API_KEY = CONFIG.API_KEY;
 
 // Units for temperature etc. (metric = Celsius)
 const UNITS = "metric";
@@ -63,33 +53,37 @@ const FIELD_LABELS = {
 };
 
 /* =========================
-   3) DOM elements (HTML ����)
+   3) DOM elements (HTML 연결)
    - We grab elements by id so we can read inputs and write results.
    ========================= */
 
-const $form = document.getElementById("search-form"); // �� ��ü(Submit �̺�Ʈ)
-const $activitySelect = document.getElementById("activity-select"); // Ȱ�� select
+const $form = document.getElementById("search-form"); // 폼전체(Submit event)
+const $activitySelect = document.getElementById("activity-select"); 
 const $destinationSelect = document.getElementById("destination-select"); // ������ select
-const $checkin = document.getElementById("checkin-input"); // üũ�� date
-const $checkout = document.getElementById("checkout-input"); // üũ�ƿ� date
-const $message = document.getElementById("message-area"); // ����/�ȳ� �޽��� ǥ��
-const $loading = document.getElementById("loading"); // �ε� ǥ�� �ڽ�
-const $results = document.getElementById("results"); // �ֺ� Ķ���� ī�尡 ���? ��
-const $meta = document.getElementById("result-meta"); // ���? ���? ��Ÿ ǥ��
-const $reset = document.getElementById("reset-btn"); // Reset ��ư
+const $checkin = document.getElementById("checkin-input"); 
+const $checkout = document.getElementById("checkout-input"); 
+const $message = document.getElementById("message-area"); // 에러/안내msg
+const $loading = document.getElementById("loading"); // 로딩표시박스
+const $results = document.getElementById("results"); // 주별 결과캘린더들어갈곳
+const $meta = document.getElementById("result-meta"); // 결과상단 메타표시
+const $reset = document.getElementById("reset-btn"); // Reset 버튼
 
-// Modal(�˾�) ���� DOM
-const $modal = document.getElementById("hourly-modal"); // ���? ��ü
-const $modalClose = document.getElementById("modal-close"); // ���? �ݱ� ��ư
-const $modalTitle = document.getElementById("modal-title"); // ���? ���� �ؽ�Ʈ
-const $modalSubtitle = document.getElementById("modal-subtitle"); // ���? ����Ÿ��Ʋ �ؽ�Ʈ
-const $hourlyTableWrap = document.getElementById("hourly-table-wrap"); // ���? �� ǥ ���� div
+// Modal(팝업) 관련 DOM
+const $modal = document.getElementById("hourly-modal"); // 모달전체
+const $modalClose = document.getElementById("modal-close"); // 모달닫기버튼
+const $modalTitle = document.getElementById("modal-title"); // 모달제목텍스트
+const $modalSubtitle = document.getElementById("modal-subtitle"); 
+const $hourlyTableWrap = document.getElementById("hourly-list"); 
+
+if (!$form || !$activitySelect || !$destinationSelect || !$checkin || !$checkout || !$message || !$loading || !$results || !$meta || !$reset || !$modal || !$modalClose || !$modalTitle || !$modalSubtitle || !$hourlyTableWrap) {
+  console.error("Required HTML element is missing. Check id names in travel.html.");
+}
 
 /* =========================
-   4) Helper functions (���� ���� ��ƿ)
+   4) Helper functions (자주쓰는 유틸)
    ========================= */
 
-// ���ڸ� �� �ڸ� ���ڿ��� (��: 4 -> "04")
+// 숫자를 두 자리 문자열로 (예: 4 -> "04")
 function pad2(n){ return String(n).padStart(2, "0"); }
 
 // Date -> "YYYY-MM-DD"
@@ -100,7 +94,7 @@ function toDateKey(dateObj){
   return `${y}-${m}-${d}`;
 }
 
-// "YYYY-MM-DD" -> Date ��ü�� ��ȯ
+// "YYYY-MM-DD" -> Date 객체로 변환
 function parseDateInput(val){
   if(!val) return null;
   const [y,m,d] = val.split("-").map(Number);
@@ -114,23 +108,23 @@ function addDays(dateObj, days){
   return d;
 }
 
-// �� ���� ������ �����Ϸ� ����
+// 한주시작을 월요일로
 function startOfWeekMonday(dateObj){
   const d = new Date(dateObj);
   const day = d.getDay(); // 0 Sun ... 6 Sat
-  const diff = (day === 0) ? -6 : (1 - day); // Sunday�� -6 �ؼ� �����Ϸ�
+  const diff = (day === 0) ? -6 : (1 - day); // Sunday면 -6해서 월요일로
   d.setDate(d.getDate() + diff);
   d.setHours(0,0,0,0);
   return d;
 }
 
-// �� ���� ��(�Ͽ���)
+// 한주의 끝(일요일)
 function endOfWeekSunday(dateObj){
   const s = startOfWeekMonday(dateObj);
   return addDays(s, 6);
 }
 
-// üũ��~üũ�ƿ� ������ "�� ���� ī��"�� �����?
+// 체크인~체크아웃 범위를 "주 단위 카드"로 만들기
 function buildDateRangeWeeks(checkInDate, checkOutDate){
   const startWeek = startOfWeekMonday(checkInDate);
   const endWeek = startOfWeekMonday(checkOutDate);
@@ -151,31 +145,31 @@ function buildDateRangeWeeks(checkInDate, checkOutDate){
   return weeks;
 }
 
-// ���� null/undefined�� "-" ǥ��, ���ڴ� �Ҽ� 1�ڸ�
+// 값이 null/undefined면 "-" 표시, 숫자는 소수 1자리
 function fmtNumber(val, unit=""){
   if(val === null || val === undefined || Number.isNaN(val)) return "-";
   const n = typeof val === "number" ? (Math.round(val*10)/10) : val;
   return `${n}${unit}`;
 }
 
-// 0~1 Ȯ���� %�� (��: 0.3 -> 30%)
+// 0~1 확률을 %로 (예: 0.3 -> 30%)
 function fmtPercent01(pop){
   if(pop === null || pop === undefined) return "-";
   return `${Math.round(pop*100)}%`;
 }
 
-// unix seconds -> "HH:00" ����(���� Ÿ��)
+// unix seconds -> "HH:00"형태(로컬 타임)
 function unixToHourLabel(unixSec){
   const d = new Date(unixSec * 1000);
   return `${pad2(d.getHours())}:00`;
 }
 
-// �ε� �ڽ� �����?/���̱�
+// 로딩 박스 숨기기/보이기
 function setLoading(on){
   $loading.classList.toggle("hidden", !on);
 }
 
-// �޽��� ���?: ok/error ��Ÿ�� ����
+// 메시지 출력: ok/error 스타일 선택
 function showMessage(type, text){
   if(!text){
     $message.innerHTML = "";
@@ -186,45 +180,45 @@ function showMessage(type, text){
 }
 
 /* =========================
-   5) Validation (�Է� �� ����)
+   5) Validation (입력 값 검증)
    - /forecast is about 5 days, so we limit date range.
    ========================= */
 
-// ���� ��¥�� "����~5��" �ȿ� �ִ��� �˻�
+// 선택 날짜가 "오늘~5일" 안에 있는지 검사
 function isWithinForecastWindow(dateObj){
   const today = new Date();
   today.setHours(0,0,0,0);
-  const max = addDays(today, 5); // ���������� 5��
+  const max = addDays(today, 5); // 보수적으로 5일
   return (dateObj >= today) && (dateObj <= max);
 }
 
-// �� �Է� ����: missing/invalid/date range
+// 폼 입력 검증: missing/invalid/date range
 function validateInputs({ activity, destination, checkIn, checkOut }){
-  // API_KEY �̼����̸� �ٷ� ����
-  if(API_KEY === "PUT_YOUR_OPENWEATHER_API_KEY_HERE" || !API_KEY){
-    return { ok:false, message:"Please set API_KEY in main.js first." };
-  }
-  // Ȱ�� ���� ����
+  // API_KEY 미설정이면 바로 실패
+  // if(API_KEY === API_KEY || !API_KEY){
+  //   return { ok: false, message: "Please set OPENWEATHER_API_KEY in js/config.js first." };
+  // }
+  // 활동 선택 여부
   if(!activity){
     return { ok:false, message:"Please select an activity." };
   }
-  // ������ ���� ����
+  // 여행지 선택 여부
   if(!destination){
     return { ok:false, message:"Please select a destination." };
   }
-  // ��¥ �Է� ����
+  // 날짜 입력 여부
   if(!checkIn || !checkOut){
     return { ok:false, message:"Please select both check-in and check-out dates." };
   }
-  // üũ�ƿ��� �� ������ ����
+  // 체크아웃이 더 빠르면 실패
   if(checkOut < checkIn){
     return { ok:false, message:"Check-out must be after check-in." };
   }
-  // /forecast ����(5��) ���̸� ����
+  // /forecast 범위(5일) 밖이면 실패
   if(!isWithinForecastWindow(checkIn) || !isWithinForecastWindow(checkOut)){
     return { ok:false, message:"This MVP only supports the next ~5 days (/data/2.5/forecast). Please pick dates within 5 days from today." };
   }
-  // ���?
+  
   return { ok:true, message:"" };
 }
 
@@ -232,29 +226,29 @@ function validateInputs({ activity, destination, checkIn, checkOut }){
    6) API call: OpenWeather /data/2.5/forecast
    ========================= */
 
-// ���ø����� /forecast ȣ���ϴ� �Լ�
+// 도시명으로 /forecast 호출하는 함수
 async function fetchForecastByCity(city){
-  // API URL �����? (q=���ø�)
+  // API URL 만들기 (q=도시명)
   const url =
     `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}` +
-    `&appid=${encodeURIComponent(CONFIG.API_KEY)}` +
+    `&appid=${encodeURIComponent(API_KEY)}` +
     `&units=${encodeURIComponent(UNITS)}` +
     `&lang=${encodeURIComponent(LANG)}`;
 
-  // fetch: ��Ʈ��ũ ��û
+  // fetch: 네트워크 요청
   const res = await fetch(url);
 
-  // JSON �Ľ�
+  // JSON 파싱
   const data = await res.json();
 
-  // HTTP ����(res.ok == false)�� �� ���� ����
+  // HTTP 오류(res.ok == false)일 때 에러 던짐
   if(!res.ok){
     const cod = data?.cod ?? res.status;
     const msg = data?.message ?? "Unknown error";
     throw new Error(`OpenWeather error (${cod}): ${msg}`);
   }
 
-  // �����̸� ������ ����
+  //성공이면 데이터 리턴
   return data;
 }
 
@@ -265,28 +259,28 @@ async function fetchForecastByCity(city){
      dateMap["YYYY-MM-DD"] = { items: [...], summary: {...} }
    ========================= */
 
-// /forecast ������(list[])�� ��¥���� ����
+// /forecast 데이터(list[])를 날짜별로 묶기
 function groupForecastByDate(forecastData){
   const dateMap = {};
   const list = forecastData?.list || [];
 
-  // �� item�� 3�ð� ���� ����
+  //  각 item은 3시간 단위 예보
   list.forEach(item => {
     const d = new Date(item.dt * 1000); // dt unix sec -> Date
     const key = toDateKey(d); // "YYYY-MM-DD"
 
-    // key�� ó���̸� �� ���� ����
+    // key가 처음이면 빈 구조 생성
     dateMap[key] = dateMap[key] || { items: [], summary: null };
 
-    // items �迭�� push
+    // items 배열에 push
     dateMap[key].items.push(item);
   });
 
-  // ��¥�� ���?(summary) �����?
+  // 날짜별 요약(summary) 만들기
   Object.keys(dateMap).forEach(key => {
     const items = dateMap[key].items;
 
-    // �� ���� �迭 ����(�ִ� ����)
+    // 각 변수 배열 추출(값없으면 걸러내기)
     const temps = items.map(x => x?.main?.temp).filter(v => v !== null && v !== undefined);
     const feels = items.map(x => x?.main?.feels_like).filter(v => v !== null && v !== undefined);
     const pops  = items.map(x => x?.pop).filter(v => v !== null && v !== undefined);
@@ -295,12 +289,12 @@ function groupForecastByDate(forecastData){
     const wind  = items.map(x => x?.wind?.speed).filter(v => v !== null && v !== undefined);
     const gust  = items.map(x => x?.wind?.gust).filter(v => v !== null && v !== undefined);
 
-    // ������(3�ð� ����) �ջ�: rain["3h"] + snow["3h"]
+    // 강수량(3시간 누적) 합산: rain["3h"] + snow["3h"]
     const rain3h = items.map(x => x?.rain?.["3h"] ?? 0);
     const snow3h = items.map(x => x?.snow?.["3h"] ?? 0);
     const precipSum = rain3h.reduce((a,b)=>a+b,0) + snow3h.reduce((a,b)=>a+b,0);
 
-    // summary ��ü �����?
+    // summary 객체 만들기
     dateMap[key].summary = {
       tempMax: temps.length ? Math.max(...temps) : null,
       tempMin: temps.length ? Math.min(...temps) : null,
@@ -321,28 +315,28 @@ function groupForecastByDate(forecastData){
    8) Modal open/close
    ========================= */
 
-// ���? ����
+// 모달 열기
 function openModal(){
   $modal.classList.remove("hidden");
-  document.body.style.overflow = "hidden"; // ���? ��ũ�� ����
+  document.body.style.overflow = "hidden"; // 배경 스크롤 방지
 }
 
-// ���? �ݱ�
+// 모달 닫기
 function closeModal(){
   $modal.classList.add("hidden");
   document.body.style.overflow = "";
-  $hourlyTableWrap.innerHTML = ""; // ���� ǥ ���� ����
+  $hourlyTableWrap.innerHTML = ""; // 이전 표 내용 제거
 }
 
-// �ݱ� ��ư Ŭ�� -> closeModal
+// 닫기 버튼 클릭 -> closeModal
 $modalClose.addEventListener("click", closeModal);
 
-// ���?(��ο�? �κ�) Ŭ�� -> closeModal
+// 배경(어두운 부분) 클릭  -> closeModal
 $modal.addEventListener("click", (e) => {
   if(e.target && e.target.dataset && e.target.dataset.close === "true") closeModal();
 });
 
-// ESC Ű -> closeModal
+// ESC  -> closeModal
 window.addEventListener("keydown", (e) => {
   if(e.key === "Escape" && !$modal.classList.contains("hidden")) closeModal();
 });
@@ -353,16 +347,17 @@ window.addEventListener("keydown", (e) => {
    - Rows = variables
    ========================= */
 
-// �ð� ���� �迭 �����?: ["00:00", "03:00", ...] and also keep items
+// 시간 슬롯 배열 만들기: ["00:00", "03:00", ...] and also keep items
 function buildTimeSlots(items){
-  // items�� 3�ð� ���� ���� �迭(�� ��¥��)
-  // �� item���� dt�� �̾� HH:00�� ��ȯ
+    // items는 3시간 단위 예보 배열(그 날짜의)
+  // 각 item에서 dt를 뽑아 HH:00로 변환
+
   return items.map(it => unixToHourLabel(it.dt));
 }
 
-// Ư�� item���� ���� ���� �����ϴ� ���� �Լ���(ǥ�� �� ��)
+// 특정 item에서 변수 값을 추출하는 작은 함수들(표의 셀 값)
 function getCellValue(varKey, it){
-  // varKey���� ǥ���� ���� �ٸ��� �����?
+  // varKey마다 표시할 값을 다르게 만든다
   switch(varKey){
     case "weather":
       // weather[0].main + description
@@ -370,9 +365,9 @@ function getCellValue(varKey, it){
         ? `${it.weather[0].main}${it.weather[0].description ? ` (${it.weather[0].description})` : ""}`
         : "-";
     case "temp":
-      return fmtNumber(it?.main?.temp, "��C");
+      return fmtNumber(it?.main?.temp, "°C");
     case "feels":
-      return fmtNumber(it?.main?.feels_like, "��C");
+      return fmtNumber(it?.main?.feels_like, "°C");
     case "pop":
       return fmtPercent01(it?.pop);
     case "precip3h": {
@@ -397,13 +392,13 @@ function getCellValue(varKey, it){
   }
 }
 
-// ���? ǥ�� �׸��� �ٽ� �Լ�
+// 모달 표를 그리는 핵심 함수
 function render3HourTableModal({ cityName, dateKey, items }){
-  // ���? ����/����Ÿ��Ʋ ����
+  // 모달 제목/서브타이틀 세팅
   $modalTitle.textContent = "3-hour forecast table";
   $modalSubtitle.textContent = `${cityName} ? ${dateKey} ? ${items.length} time slots`;
 
-  // ǥ���� ������ ����(����)�� ���� (���Ͻø� ���⼭ ���� �� �߰�/�����ϸ� ��)
+  // 표에서 보여줄 “행(변수)” 정의 (원하면 여기서 행을 더 추가/삭제)
   const rows = [
     { key: "weather", label: "Weather" },
     { key: "temp", label: "Temp" },
@@ -417,11 +412,11 @@ function render3HourTableModal({ cityName, dateKey, items }){
     { key: "vis", label: "Visibility" },
   ];
 
-  // columns: �ð� ��
+  // columns: 시간 라벨
   const timeSlots = buildTimeSlots(items);
 
-  // ---- HTML table �����? ----
-  // thead: ù ���� "Variable" + �ð���
+  // ---- HTML table 만들기 ----
+  // thead: 첫 행은 "Variable" + 시간들
   const thead = `
     <thead>
       <tr>
@@ -431,7 +426,7 @@ function render3HourTableModal({ cityName, dateKey, items }){
     </thead>
   `;
 
-  // tbody: �� row(����)�� ����, �ð� ���Ը��� �� ����
+  // tbody: 각 row(변수)에 대해, 시간 슬롯마다 셀 생성
   const tbody = `
     <tbody>
       ${rows.map(r => `
@@ -443,7 +438,7 @@ function render3HourTableModal({ cityName, dateKey, items }){
     </tbody>
   `;
 
-  // ���� table HTML
+  // 최종 table HTML
   const tableHTML = `
     <div class="hourly-table-wrap">
       <table class="hourly-table">
@@ -453,10 +448,10 @@ function render3HourTableModal({ cityName, dateKey, items }){
     </div>
   `;
 
-  // ���? �ȿ� ǥ ����
+  // 모달 안에 표 삽입
   $hourlyTableWrap.innerHTML = tableHTML;
 
-  // ���? ����
+  // 모달 열기
   openModal();
 }
 
@@ -464,12 +459,12 @@ function render3HourTableModal({ cityName, dateKey, items }){
    10) Calendar summary (week table)
    ========================= */
 
-// 1�� Ȱ���� �����̹Ƿ�, Ȱ���� �´� field ���? ��������
+// 1개 활동만 선택이므로, 활동에 맞는 field 목록 가져오기
 function collectFieldsForActivity(activity){
   return ACTIVITY_FIELD_MAP[activity] || [];
 }
 
-// calendar ���� ���� ���? �����?
+// calendar 셀에 넣을 요약값 만들기
 function getSummaryValue(fieldKey, summary){
   if(!summary) return "-";
   switch(fieldKey){
@@ -494,7 +489,7 @@ function getSummaryValue(fieldKey, summary){
   }
 }
 
-// ���� ����: ��¥ Ŭ�� �� dateMap�� �ٽ� ���� ���� �����ص�
+// 상태 저장: 날짜 클릭 시 dateMap을 다시 쓰기 위해 저장해둠
 let __state = {
   cityName: "",
   dateMap: null,
@@ -503,37 +498,37 @@ let __state = {
   activity: ""
 };
 
-// �ֺ� Ķ������ �������ϴ� �Լ�
+// 주별 캘린더를 렌더링하는 함수
 function renderResults({ cityName, activity, checkIn, checkOut, dateMap }){
-  // �� �迭 �����?
+  //주 배열 만들기
   const weeks = buildDateRangeWeeks(checkIn, checkOut);
 
-  // ������ Ȱ���� �ʿ��� ���? �ʵ� ���?
+  //선택한 활동에 필요한 요약 필드 목록
   const fields = collectFieldsForActivity(activity);
 
-  // üũ��/üũ�ƿ� Ű
+  // 체크인/체크아웃 키
   const checkInKey = toDateKey(checkIn);
   const checkOutKey = toDateKey(checkOut);
 
-  // ���� ����
+  // 상태저장
   __state = { cityName, dateMap, checkInKey, checkOutKey, activity };
 
-  // ���? ��Ÿ ���� ǥ��
+  // 상단메타정보표시
   $meta.textContent = `${cityName} ? ${checkInKey} �� ${checkOutKey} ? Activity: ${activity}`;
 
-  // ���? ���� ����
+  // 결과 영역 비우기
   $results.innerHTML = "";
 
-  // �� �ָ��� ī�� ����
+  // 각 주마다 카드 생성
   weeks.forEach((wk, index) => {
     const wkStartKey = toDateKey(wk.weekStart);
     const wkEndKey = toDateKey(wk.weekEnd);
 
-    // ī�� div ����
+    // 카드 div 생성
     const card = document.createElement("div");
     card.className = "week-card";
 
-    // ī�� HTML ����: header + table
+    // 카드 HTML 구성: header + table
     card.innerHTML = `
       <div class="week-header">
         <div>
@@ -598,23 +593,23 @@ function renderResults({ cityName, activity, checkIn, checkOut, dateMap }){
       </div>
     `;
 
-    // ? ��¥ ���? Ŭ�� �̺�Ʈ ���� (���? ǥ ����)
+    // ⭐ 날짜 헤더 클릭 이벤트 연결 (모달 표 띄우기)
     card.querySelectorAll("th[data-datekey]").forEach(th => {
       th.addEventListener("click", () => {
-        const dateKey = th.dataset.datekey; // Ŭ���� ��¥
-        const hasData = th.dataset.hasdata === "1"; // ������ �ֳ�?
+        const dateKey = th.dataset.datekey; //클릭한 날짜
+        const hasData = th.dataset.hasdata === "1"; // 데이터 있나?
 
         if(!hasData){
           showMessage("error", "No 3-hour forecast for this date (outside the 5-day window).");
           return;
         }
 
-        const items = __state.dateMap?.[dateKey]?.items || []; // �� ��¥ items
-        render3HourTableModal({ cityName: __state.cityName, dateKey, items }); // ���? ǥ ����
+        const items = __state.dateMap?.[dateKey]?.items || []; //그 날짜 itemsitems
+        render3HourTableModal({ cityName: __state.cityName, dateKey, items }); // 모달 표 렌더
       });
     });
 
-    // ī�� ȭ�鿡 �߰�
+    // 카드 화면에 추가
     $results.appendChild(card);
   });
 }
@@ -623,43 +618,43 @@ function renderResults({ cityName, activity, checkIn, checkOut, dateMap }){
    11) Form events (submit / reset)
    ========================= */
 
-// Search ��ư Ŭ��(�� submit) �� ����
+// Search 버튼 클릭(폼 submit) 시 실행
 $form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // �� �⺻ ����(������ ���ε�) ����
-  showMessage("", ""); // �޽��� �ʱ�ȭ
+  e.preventDefault(); // 폼 기본 제출(페이지 리로드) 막기
+  showMessage("", ""); // 메시지 초기화
 
-  // �Է°� �б�
+  // 입력값 읽기
   const activity = $activitySelect.value;
   const destination = $destinationSelect.value;
   const checkIn = parseDateInput($checkin.value);
   const checkOut = parseDateInput($checkout.value);
 
-  // �Է� ����
+  // 입력 검증
   const v = validateInputs({ activity, destination, checkIn, checkOut });
   if(!v.ok){
     showMessage("error", v.message);
     return;
   }
 
-  // ���? �ʱ�ȭ
+  // 결과 초기화
   $results.innerHTML = "";
   $meta.textContent = "";
 
   try{
-    setLoading(true); // �ε� ǥ�� ON
+    setLoading(true); // 로딩 표시 ON
 
-    // API ��û
+    // API 요청
     const forecastData = await fetchForecastByCity(destination);
 
-    setLoading(false); // �ε� ǥ�� OFF
+    setLoading(false); //로딩 표시  OFF
 
-    // ���信 city.name�� ������ �װ� ���?(������ destination �״��?)
+    // 응답에 city.name이 있으면 그걸 사용(없으면 destination 그대로)
     const cityName = forecastData?.city?.name ? forecastData.city.name : destination;
 
-    // ��¥���� ����
+    // 날짜별로 묶기
     const dateMap = groupForecastByDate(forecastData);
 
-    // ���� �Ⱓ �ȿ� �����Ͱ� ���� ���� �ִ��� ���� üũ
+    // 선택 기간 안에 데이터가 없는 날이 있는지 간단 체크
     let missing = 0;
     const cursor = new Date(checkIn);
     while(cursor <= checkOut){
@@ -668,24 +663,29 @@ $form.addEventListener("submit", async (e) => {
       cursor.setDate(cursor.getDate() + 1);
     }
 
-    // �ȳ� �޽���
+    // 안내 메시지
     if(missing > 0){
       showMessage("error", `Some selected days have no /forecast data (${missing} day(s)). We'll show what is available.`);
     } else {
       showMessage("ok", "Forecast loaded. Click a date header to open the 3-hour table.");
     }
 
-    // Ķ���� ����
+    // 캘린더 렌더
     renderResults({ cityName, activity, checkIn, checkOut, dateMap });
 
   } catch(err){
-    console.error(err); // ������ �ֿܼ� ���� ���?
+    console.error(err); // 개발자 콘솔에 에러 출력
     setLoading(false);
-    showMessage("error", `Failed to load forecast. ${err.message}`); // ȭ�鿡 ���� ���?
+    showMessage("error", `Failed to load forecast. ${err.message}`); // 화면에 에러 출력
   }
 });
 
-// Reset ��ư Ŭ�� �� �Է°�/ȭ�� �ʱ�ȭ
+// 어느 요소를 못 찾았는지 빨리 확인
+if (!$form || !$activitySelect || !$destinationSelect || !$checkin || !$checkout || !$message || !$loading || !$results || !$meta || !$reset || !$modal || !$modalClose || !$modalTitle || !$modalSubtitle || !$hourlyTableWrap) {
+  console.error("Required HTML element is missing. Check id names in travel.html.");
+}
+
+// Reset 버튼 클릭 시 입력값/화면 초기화
 $reset.addEventListener("click", () => {
   $activitySelect.value = "";
   $destinationSelect.value = "";

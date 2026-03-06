@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weatherman - �뿬�뻾 �궇�뵪</title>
+    <title>Weather Scanner </title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -17,6 +17,7 @@
     <!-- �씠 �럹�씠吏� �쟾�슜 �뒪����씪 -->
     <link rel="stylesheet" href="css/travel.css" />
   </head>
+
   <body>
     <!-- ===== �긽�떒 �꽕鍮꾧쾶�씠�뀡 ===== -->
     <nav class="top-nav">
@@ -27,16 +28,16 @@
         </a>
         <div class="desktop-menu">
           <a href="index.html" class="nav-link">
-            <i class="fa-solid fa-house"></i> �솃
+            <i class="fa-solid fa-house"></i> 홈
           </a>
           <a href="map.html" class="nav-link">
-            <i class="fa-solid fa-map-location-dot"></i> �궇�뵪 吏��룄
+            <i class="fa-solid fa-map-location-dot"></i> 날씨지도
           </a>
           <a href="travel.html" class="nav-link">
-            <i class="fa-solid fa-plane"></i> �뿬�뻾 �궇�뵪
+            <i class="fa-solid fa-plane"></i> 여행날씨
           </a>
           <a href="outfit.html" class="nav-link">
-            <i class="fa-solid fa-shirt"></i> �샆李⑤┝ 異붿쿇
+            <i class="fa-solid fa-shirt"></i> 옷차림 추천
           </a>
         </div>
       </div>
@@ -48,12 +49,12 @@
       <aside class="sidebar" id="sidebar-left">
 
         <div class="card">
-          <div class="card-header sky">�윆� �솢�룞 �꽑�깮</div>
+          <div class="card-header sky">무엇을 할 계획이신가요?</div>
           <div class="card-body">
             <!-- TODO: JS濡� �솢�룞 �꽑�깮 踰꾪듉 �젋�뜑留� (travel.js) -->
             <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              �솢�룞�쓣 �꽑�깮�븯�꽭�슂.<br />
-              (怨⑦봽, �굾�떆, �벑�궛, �빐蹂�, 罹좏븨, �뱶�씪�씠釉�, �빞�쇅援ш린)
+              원하는 활동 선택입력.<br />
+              
             </p>
             <div class="form-group"> <!-- Activity �뱶濡��떎�슫 臾띠쓬 -->
             <label class="label" for="activity-select">Activity</label> <!-- �뱶濡��떎�슫 �씪踰� -->
@@ -69,11 +70,11 @@
         </div>
         
         <div class="card">
-          <div class="card-header sky">�윋� 吏��뿭 �꽑�깮</div>
+          <div class="card-header sky">어디로 갈 계획이신가요?</div>
           <div class="card-body">
             <!-- TODO: JS濡� �룄�떆 �꽑�깮 �뱶濡��떎�슫 �젋�뜑留� (travel.js) -->
             <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              �뿬�뻾 怨꾪쉷以묒씤 �룄�떆瑜� �꽑�깮�븯�꽭�슂.
+              원하는 여행지 선택입력
             </p>
             <div class="form-group"> <!-- Destination �뱶濡��떎�슫 臾띠쓬 -->
             <label class="label" for="destination-select">Destination</label> <!-- �뱶濡��떎�슫 �씪踰� -->
@@ -91,77 +92,55 @@
 
       <!-- 以묒븰 硫붿씤 肄섑뀗痢� -->
       <main class="main-content">
-        <h2 class="page-title">�쐢截� �뿬�뻾 & 痍⑤�명솢�룞 �궇�뵪</h2>
+        <h2 class="page-title">여행중 날씨를 알려드립니다</h2>
 
-        <!-- TODO: �궇吏� �꽑�깮 (travel.js) -->
-        <div class="card" style="margin-bottom: 20px">
-          <div class="card-header sky">�윋� �궇吏� �꽑�깮 (8�씪 �씠�궡)</div>
-          <div
-            class="card-body date-selector"
-            style="
-              min-height: 60px;
-              display: flex;
-              align-items: center;
-              color: var(--color-text-sub);
-            "
-          >
-            <div class="form-group"> <!-- Check-in �궇吏� �엯�젰 臾띠쓬 -->
-            <label class="label" for="checkin-input">Check-in</label> <!-- �씪踰� -->
-            <input id="checkin-input" class="input" type="date" /> <!-- �궇吏� �꽑�깮 input -->
+        <form id="search-form" class="form">
+          <div class="card" style="margin-bottom: 20px">
+            <div class="card-header sky">알고싶은 기간을 입력하세요</div>
+            <div
+              class="card-body date-selector"
+              style="
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                color: var(--color-text-sub);
+                flex-wrap: wrap;
+              "
+            >
+              <div class="form-group">
+                <label class="label" for="checkin-input">Check-in</label>
+                <input id="checkin-input" class="input" type="date" />
+              </div>
 
-                      <div class="form-group"> <!-- Check-out �궇吏� �엯�젰 臾띠쓬 -->
-            <label class="label" for="checkout-input">Check-out</label> <!-- �씪踰� -->
-            <input id="checkout-input" class="input" type="date" /> <!-- �궇吏� �꽑�깮 input -->
+              <div class="form-group">
+                <label class="label" for="checkout-input">Check-out</label>
+                <input id="checkout-input" class="input" type="date" />
+              </div>
             </div>
-
           </div>
 
+          <div class="form-row actions">
+            <button id="submit-btn" class="btn primary" type="submit">Search</button>
+            <button id="reset-btn" class="btn ghost" type="button">Reset</button>
           </div>
-        </div>
-        <!-- ===== 踰꾪듉 �쁺�뿭 ===== -->
-        <div class="form-row actions"> <!-- 踰꾪듉�뱾�쓣 �븳 以꾨줈 諛곗튂 -->
-          <button id="submit-btn" class="btn primary" type="submit">Search</button> <!-- 寃��깋 踰꾪듉(�뤌 submit) -->
-          <button id="reset-btn" class="btn ghost" type="button">Reset</button> <!-- 珥덇린�솕 踰꾪듉(JS媛� 媛� 珥덇린�솕) -->
-        </div>
 
-                <!-- ===== 硫붿떆吏� 異쒕젰 �쁺�뿭(�뿉�윭/�꽦怨� �븞�궡) ===== -->
-        <div id="message-area" class="message-area" aria-live="polite"></div>
-        <!-- aria-live: �솕硫� �궘�룆湲곌�� 硫붿떆吏� 蹂��솕瑜� �씫�뼱二쇰룄濡� �븿(�젒洹쇱꽦) -->
-
+          <div id="message-area" class="message-area" aria-live="polite"></div>
+        </form>
 
         <!-- TODO: 寃��깋 寃곌낵 �뀒�씠釉� (travel.js) -->
         <div class="card">
-          <div class="card-header sunset">�윋� �솢�룞蹂� �궇�뵪 �젙蹂�</div>
-          <div
-            class="card-body result-table"
-            style="
-              min-height: 300px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: var(--color-text-sub);
-            "
-          >
-            <div style="text-align: center">
-              <i
-                class="fa-solid fa-magnifying-glass"
-                style="
-                  font-size: 2.5rem;
-                  margin-bottom: 12px;
-                  color: var(--color-sky);
-                "
-              ></i>
-               <div id="result-meta" class="result-meta"></div> <!-- JS媛� "�룄�떆, 湲곌컙, �솢�룞" �뀓�뒪�듃 �꽔�쓬 -->
-                  <div id="loading" class="loading hidden">Loading forecast���</div> <!-- 濡쒕뵫 �몴�떆(湲곕낯 hidden) -->
-            <div id="results" class="results"></div> <!-- 罹섎┛�뜑 二쇰퀎 移대뱶�뱾�씠 JS濡� �뱾�뼱媛� -->
-            
-              <p>테스트테스트<br />�궇�뵪 �젙蹂닿�� �몴�떆�맗�땲�떎.</p>
-              <p style="font-size: 0.8rem; margin-top: 8px">
-                (媛뺤닔�웾, �옄�쇅�꽑, �뭾�냽 �벑)
-              </p>
+          <div class="card-header sunset">여행기간중 날씨 칼랜더</div>
+
+          <div class="card-body">
+            <div class="result-header">
+              <div id="result-meta" class="result-meta"></div>
             </div>
-          </div>
+
+          <div id="loading" class="loading hidden">Loading forecast...</div>
+          <div id="results" class="results"></div>
         </div>
+      </div>
       </main>
       
 
@@ -202,10 +181,6 @@
       </a>
     </nav>
 
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/travel.js"></script>
 
     <!-- �쁽�옱 �럹�씠吏� �꽕鍮꾧쾶�씠�뀡 �솢�꽦�솕 -->
     <script>
@@ -215,5 +190,46 @@
         }
       });
     </script>
+    <!-- 3-hour popup modal -->
+<div
+  id="hourly-modal"
+  class="modal hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <div class="modal-backdrop" data-close="true"></div>
+
+  <div class="modal-panel">
+    <div class="modal-header">
+      <div>
+        <div id="modal-title" class="modal-title">3-hour forecast</div>
+        <div id="modal-subtitle" class="modal-subtitle"></div>
+      </div>
+      <button
+        id="modal-close"
+        class="modal-close"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="modal-content">
+      <div class="modal-hint">
+        This breakdown comes from <b>/data/2.5/forecast</b> (3-hour steps).
+      </div>
+      <div id="hourly-list" class="hourly-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- config.js must load first so travel.js can read the API key -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/travel.js"></script>
+
   </body>
 </html>
