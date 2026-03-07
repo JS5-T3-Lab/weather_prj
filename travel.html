@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Scanner</title>
 
-    <!-- Font Awesome 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- 기존 프로젝트 공통 스타일 (nav, 색상변수 등 팀 통일) -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- 이 페이지 전용 스타일 (분리된 CSS 파일) -->
     <link rel="stylesheet" href="css/travel.css" />
   </head>
 
@@ -28,23 +21,15 @@
           <span>Weather Scanner</span>
         </a>
         <div class="desktop-menu">
-          <a href="index.html" class="nav-link">
-            <i class="fa-solid fa-house"></i> 홈
-          </a>
-          <a href="map.html" class="nav-link">
-            <i class="fa-solid fa-map-location-dot"></i> 날씨지도
-          </a>
-          <a href="travel.html" class="nav-link">
-            <i class="fa-solid fa-plane"></i> 여행날씨
-          </a>
-          <a href="outfit.html" class="nav-link">
-            <i class="fa-solid fa-shirt"></i> 옷차림 추천
-          </a>
+          <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> 홈</a>
+          <a href="map.html"   class="nav-link"><i class="fa-solid fa-map-location-dot"></i> 날씨지도</a>
+          <a href="travel.html" class="nav-link"><i class="fa-solid fa-plane"></i> 여행날씨</a>
+          <a href="outfit.html" class="nav-link"><i class="fa-solid fa-shirt"></i> 옷차림 추천</a>
         </div>
       </div>
     </nav>
 
-    <!-- ===== Bootstrap 그리드 레이아웃 ===== -->
+    <!-- ===== 메인 레이아웃 ===== -->
     <div class="travel-wrapper container-fluid">
       <div class="row g-3">
 
@@ -59,10 +44,17 @@
               <div class="form-group">
                 <label class="label" for="activity-select">Activity</label>
                 <select id="activity-select" class="input form-select form-select-sm">
-                  <option value="">Select an activity</option>
-                  <option value="Fishing">Fishing</option>
-                  <option value="Hiking">Hiking</option>
-                  <option value="Running">Running</option>
+                  <option value="">활동을 선택하세요</option>
+                  <option value="Fishing">🎣 낚시</option>
+                  <option value="Hiking">🥾 등산 / 트레킹</option>
+                  <option value="Running">🏃 조깅 / 러닝</option>
+                  <option value="Cycling">🚴 자전거 라이딩</option>
+                  <option value="Swimming">🏊 야외수영 / 해수욕</option>
+                  <option value="Camping">⛺ 캠핑 / 피크닉</option>
+                  <option value="Golf">⛳ 골프</option>
+                  <option value="OutdoorSports">⚽ 야외 구기 (축구·배구 등)</option>
+                  <option value="DogWalk">🐾 반려견 산책</option>
+                  <option value="Photography">📷 야외 사진촬영</option>
                 </select>
               </div>
             </div>
@@ -75,11 +67,9 @@
               <p class="card-hint">원하는 여행지 선택입력</p>
               <div class="form-group">
                 <label class="label" for="destination-select">Destination</label>
+                <!-- ✅ 도시 목록은 travel.js의 CITY_LIST 배열에서 동적으로 채워짐 -->
                 <select id="destination-select" class="input form-select form-select-sm">
-                  <option value="">Select a destination</option>
-                  <option value="Seoul">Seoul</option>
-                  <option value="Osaka">Osaka</option>
-                  <option value="Jeju">Jeju</option>
+                  <option value="">도시를 선택하세요</option>
                 </select>
               </div>
             </div>
@@ -92,9 +82,7 @@
 
           <h2 class="page-title">여행중 날씨를 알려드립니다</h2>
 
-          <!-- 날짜 입력 폼 -->
           <form id="search-form" class="form">
-
             <div class="card travel-card mb-3">
               <div class="card-header sky">알고싶은 기간을 입력하세요</div>
               <div class="card-body date-selector">
@@ -114,22 +102,15 @@
                 </div>
               </div>
             </div>
-
-            <!-- 에러/성공 메시지 영역 -->
             <div id="message-area" class="message-area" aria-live="polite"></div>
-
           </form>
 
-          <!-- 결과 캘린더 카드 -->
+          <!-- 결과 캘린더 -->
           <div class="card travel-card">
             <div class="card-header sunset">여행기간중 날씨 캘린더</div>
             <div class="card-body">
-              <div class="result-header">
-                <div id="result-meta" class="result-meta"></div>
-              </div>
-              <!-- 로딩 표시 -->
+              <div id="result-meta" class="result-meta"></div>
               <div id="loading" class="loading d-none">Loading forecast...</div>
-              <!-- 주별 캘린더 카드 삽입 영역 -->
               <div id="results" class="results"></div>
             </div>
           </div>
@@ -140,14 +121,14 @@
         <aside class="col-12 col-md-2">
           <div class="card travel-card">
             <div class="card-header sunset">활동별 날씨 안내</div>
-            <div class="card-body card-hint" id="activity-tips">
-              활동을 선택하면 맞춤 날씨 안내가 표시됩니다.
+            <div class="card-body" id="activity-tips">
+              <p class="card-hint">활동을 선택하면 맞춤 날씨 안내가 표시됩니다.</p>
             </div>
           </div>
         </aside>
 
-      </div><!-- /row -->
-    </div><!-- /container -->
+      </div>
+    </div>
 
     <!-- ===== 하단 모바일 내비 (기존 코드 유지) ===== -->
     <nav class="bottom-nav">
@@ -163,14 +144,14 @@
         <div class="modal-content">
           <div class="modal-header sky">
             <div>
-              <h5 id="modal-title" class="modal-title mb-0">3-hour forecast</h5>
+              <h5 id="modal-title" class="modal-title mb-0">3시간 예보 상세</h5>
               <small id="modal-subtitle" class="opacity-75"></small>
             </div>
             <button id="modal-close" type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p class="modal-hint">
-              This breakdown comes from <b>/data/2.5/forecast</b> (3-hour steps).
+              3시간 단위 예보 데이터 <b>(/data/2.5/forecast)</b> 기준입니다.
             </p>
             <div id="hourly-list" class="table-responsive"></div>
           </div>
@@ -178,14 +159,13 @@
       </div>
     </div>
 
-    <!-- ===== 스크립트 로드 ===== -->
+    <!-- ===== 스크립트 로드 순서 ===== -->
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/travel.js"></script>
 
-    <!-- 현재 페이지 nav active 표시 -->
     <script>
       document.querySelectorAll(".nav-link").forEach((link) => {
         if (link.getAttribute("href") === "travel.html") {

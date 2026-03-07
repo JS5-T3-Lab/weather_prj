@@ -1,42 +1,29 @@
-/* =============================================
-   travel.css - 여행/취미활동 페이지 전용 스타일
-   담당: 강성종
-   ============================================= */
-
-/* 페이지 제목 영역 */
-.page-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: var(--color-text-main);
-}
-
-/* TODO: 활동 선택 버튼 그룹 (강성종 구현 예정) */
-.activity-selector {
-  /* 골프, 낚시, 등산, 해변활동, 캠핑, 드라이브, 야외구기 */
-}
-
-/* TODO: 지역 선택 드롭다운 (강성종 구현 예정) */
-.city-selector {
-  /* 국내외 주요 도시 *//* ==============================================
+/* ==============================================
    travel.css — 여행날씨 페이지 전용 스타일
-   (Bootstrap 5 + 기존 프로젝트 색상 유지)
+   Bootstrap 5 + 기존 프로젝트 색상 유지
    ============================================== */
 
 
-/* ── 색상 변수 (팀 공통 style.css에 있으면 중복 제거 가능) ── */
+/* ── 색상 변수 ── */
 :root {
-  --color-sky:        #4db8d4;   /* 하늘색: 사이드바·날짜카드 헤더 */
-  --color-sky-dark:   #3aa0ba;   /* 하늘색 hover */
-  --color-sky-light:  #e0f4f8;   /* 하늘색 연한 배경 (캘린더 강조셀) */
-  --color-orange:     #f5a623;   /* 주황색: 캘린더 헤더 */
-  --color-orange-dark:#e0941a;   /* 주황색 hover */
-  --color-text:       #333333;   /* 기본 텍스트 */
-  --color-text-sub:   #666666;   /* 보조 텍스트 */
-  --color-bg:         #f5f5f5;   /* 페이지 배경 */
+  --color-sky:        #4db8d4;
+  --color-sky-dark:   #3aa0ba;
+  --color-sky-light:  #e0f4f8;
+  --color-orange:     #f5a623;
+  --color-orange-dark:#e0941a;
+  --color-text:       #333333;
+  --color-text-sub:   #666666;
+  --color-bg:         #f5f5f5;
   --color-white:      #ffffff;
   --color-border:     #e0e0e0;
-  --color-row-bg:     #f0f0f0;   /* 캘린더 행 이름 배경 */
+  --color-row-bg:     #f0f0f0;
+
+  /* ✅ 수정 4) 캘린더 배경색 변수 */
+  --color-col-index-bg:  #e8f4f7;   /* 날씨 지표 열 헤더/셀 배경 (하늘색 계열) */
+  --color-col-index-text:#2a7f96;   /* 날씨 지표 열 텍스트 */
+  --color-date-header-bg:#d0edf5;   /* 날짜 헤더 행 기본 배경 */
+  --color-stripe-tue-thu:#fdf6ec;   /* 화·목요일 줄무늬 (베이지) */
+  --color-stripe-sat:    #f0f7fd;   /* 토요일 줄무늬 (연파랑) */
 }
 
 
@@ -50,7 +37,7 @@ body {
 }
 
 .travel-wrapper {
-  padding: 16px 16px 80px; /* 하단 80px: 모바일 bottom-nav 여백 */
+  padding: 16px 16px 80px;
 }
 
 .page-title {
@@ -62,7 +49,7 @@ body {
 
 
 /* ════════════════════════════════════════
-   2. 카드 공통
+   2. 카드
    ════════════════════════════════════════ */
 
 .travel-card {
@@ -71,7 +58,6 @@ body {
   overflow: hidden;
 }
 
-/* 하늘색 카드 헤더 */
 .card-header.sky {
   background-color: var(--color-sky);
   color: var(--color-white);
@@ -81,7 +67,6 @@ body {
   border-bottom: none;
 }
 
-/* 주황색 카드 헤더 */
 .card-header.sunset {
   background-color: var(--color-orange);
   color: var(--color-white);
@@ -91,11 +76,11 @@ body {
   border-bottom: none;
 }
 
-/* 카드 본문 안 보조 설명 텍스트 */
 .card-hint {
   font-size: 0.85rem;
   color: var(--color-text-sub);
   line-height: 1.5;
+  margin-bottom: 8px;
 }
 
 
@@ -115,7 +100,6 @@ body {
   padding: 12px 14px;
 }
 
-/* Search 버튼 (하늘색) */
 .btn.primary {
   background-color: var(--color-sky);
   color: var(--color-white);
@@ -131,7 +115,6 @@ body {
   color: var(--color-white);
 }
 
-/* Reset 버튼 (테두리형) */
 .btn.ghost {
   background-color: var(--color-white);
   color: var(--color-sky);
@@ -149,7 +132,7 @@ body {
 
 
 /* ════════════════════════════════════════
-   4. 메시지 영역
+   4. 메시지
    ════════════════════════════════════════ */
 
 .message-area {
@@ -180,16 +163,12 @@ body {
    5. 결과 영역
    ════════════════════════════════════════ */
 
-.result-header {
-  margin-bottom: 8px;
-}
-
 .result-meta {
   font-size: 0.85rem;
   color: var(--color-text-sub);
+  margin-bottom: 8px;
 }
 
-/* 로딩 텍스트 */
 .loading {
   text-align: center;
   padding: 24px;
@@ -210,7 +189,6 @@ body {
   background-color: var(--color-white);
 }
 
-/* 주 카드 헤더 (주황색) */
 .week-header {
   background-color: var(--color-orange);
   color: var(--color-white);
@@ -228,15 +206,19 @@ body {
 .week-sub {
   font-size: 0.78rem;
   opacity: 0.85;
-  margin-top: 2px;
 }
 
-/* 캘린더 테이블 가로 스크롤 */
+.week-num {
+  font-size: 0.82rem;
+  background-color: rgba(255,255,255,0.25);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
 .table-wrap {
   overflow-x: auto;
 }
 
-/* 캘린더 테이블 */
 .calendar-table {
   width: 100%;
   border-collapse: collapse;
@@ -253,10 +235,39 @@ body {
 
 
 /* ════════════════════════════════════════
-   7. 캘린더 셀 상태
+   7. ✅ 수정 4) 캘린더 색상 구분
    ════════════════════════════════════════ */
 
-/* 여행 기간 내 날짜: 하늘색 연한 배경 */
+/* 날씨 지표 열 헤더 (맨 왼쪽 상단) */
+.col-index.calendar-table th,
+th.col-index {
+  background-color: var(--color-col-index-bg) !important;
+  color: var(--color-col-index-text) !important;
+  font-weight: 700;
+}
+
+/* 날씨 지표 행 이름 셀 (왼쪽 고정 열) */
+.row-label {
+  background-color: var(--color-col-index-bg) !important;
+  color: var(--color-col-index-text) !important;
+  font-size: 0.80rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 10px !important;
+}
+
+/* 날짜 헤더 기본 배경 (데이터 있는 날) */
+th.col-day {
+  background-color: var(--color-date-header-bg);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+th.col-day:hover {
+  opacity: 0.82;
+}
+
+/* 여행 기간 내 날짜: 하늘색 강조 */
 .cell-active {
   background-color: var(--color-sky-light) !important;
   font-weight: 600;
@@ -264,30 +275,17 @@ body {
 
 /* 여행 기간 밖 날짜: 흐리게 */
 .cell-muted {
-  background-color: #f9f9f9 !important;
+  background-color: #f7f7f7 !important;
   color: #aaaaaa;
 }
 
-/* 날짜 셀 안 레이아웃 */
-.cell-date {
-  text-align: center;
-  padding: 4px 0;
-}
+/* 날짜 셀 레이아웃 */
+.cell-date  { text-align: center; padding: 4px 0; }
+.date-top   { display: flex; justify-content: center; align-items: center; gap: 4px; flex-wrap: wrap; }
+.date-pill  { font-size: 0.78rem; font-weight: 600; }
+.date-key-sub { font-size: 0.66rem; color: #aaaaaa; margin-top: 2px; }
 
-.date-top {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.date-pill {
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-/* stay 뱃지 (하늘색) */
+/* 체류 뱃지 */
 .badge {
   background-color: var(--color-sky);
   color: var(--color-white);
@@ -297,20 +295,20 @@ body {
   font-weight: 600;
 }
 
-/* 행 이름 셀 (Temp, Wind 등 왼쪽 열) */
-.row-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  white-space: nowrap;
-  background-color: var(--color-row-bg);
-  color: var(--color-text);
-  text-align: left;
-  padding-left: 10px !important;
-}
-
 /* 값 텍스트 */
-.value {
-  font-size: 0.82rem;
+.value { font-size: 0.82rem; }
+
+/* 활동 팁 리스트 */
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.tips-list li {
+  padding: 3px 0;
+  color: var(--color-text-sub);
+  line-height: 1.5;
 }
 
 
@@ -318,7 +316,6 @@ body {
    8. 3시간 예보 모달
    ════════════════════════════════════════ */
 
-/* 모달 헤더 하늘색 */
 .modal-header.sky {
   background-color: var(--color-sky);
   color: var(--color-white);
@@ -335,7 +332,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* 3시간 예보 테이블 */
 .hourly-table {
   width: 100%;
   border-collapse: collapse;
@@ -349,43 +345,29 @@ body {
   white-space: nowrap;
 }
 
-/* 테이블 헤더 (하늘색) */
 .hourly-table thead th {
   background-color: var(--color-sky);
   color: var(--color-white);
+  text-align: center;
 }
 
-/* 짝수 행 배경 */
 .hourly-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-/* 행 이름 셀 */
 .hourly-row-name {
   font-weight: 600;
-  background-color: var(--color-row-bg);
-  color: var(--color-text);
+  background-color: var(--color-col-index-bg) !important;
+  color: var(--color-col-index-text) !important;
 }
 
 
 /* ════════════════════════════════════════
-   9. 하단 모바일 내비 (반응형)
+   9. 하단 모바일 내비
    ════════════════════════════════════════ */
 
 @media (max-width: 768px) {
   .travel-wrapper {
     padding-bottom: 80px;
   }
-}
-
-}
-
-/* TODO: 날짜 선택 (강성종 구현 예정) */
-.date-selector {
-  /* 8일 이내 날짜 선택 */
-}
-
-/* TODO: 검색 결과 테이블 (강성종 구현 예정) */
-.result-table {
-  /* 강수량, 자외선 등 활동 관련 데이터 표 */
 }
