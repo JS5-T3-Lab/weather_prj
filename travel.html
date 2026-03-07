@@ -1,25 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Scanner </title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- 怨듯넻 �뒪����씪 -->
+    <title>Weather Scanner</title>
+
+    <!-- Font Awesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- 기존 프로젝트 공통 스타일 (nav, 색상변수 등 팀 통일) -->
     <link rel="stylesheet" href="css/style.css" />
-    <!-- �씠 �럹�씠吏� �쟾�슜 �뒪����씪 -->
+
+    <!-- 이 페이지 전용 스타일 (분리된 CSS 파일) -->
     <link rel="stylesheet" href="css/travel.css" />
   </head>
 
   <body>
-    <!-- ===== �긽�떒 �꽕鍮꾧쾶�씠�뀡 ===== -->
+
+    <!-- ===== 상단 내비게이션 (기존 코드 100% 유지) ===== -->
     <nav class="top-nav">
       <div class="nav-container">
         <a href="index.html" class="logo">
@@ -43,146 +44,148 @@
       </div>
     </nav>
 
-    <!-- ===== 蹂몃Ц �젅�씠�븘�썐 ===== -->
-    <div class="layout-wrapper">
-      <!-- �쇊履� �궗�씠�뱶諛� -->
-      <aside class="sidebar" id="sidebar-left">
+    <!-- ===== Bootstrap 그리드 레이아웃 ===== -->
+    <div class="travel-wrapper container-fluid">
+      <div class="row g-3">
 
-        <div class="card">
-          <div class="card-header sky">무엇을 할 계획이신가요?</div>
-          <div class="card-body">
-            <!-- TODO: JS濡� �솢�룞 �꽑�깮 踰꾪듉 �젋�뜑留� (travel.js) -->
-            <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              원하는 활동 선택입력.<br />
-              
-            </p>
-            <div class="form-group"> <!-- Activity �뱶濡��떎�슫 臾띠쓬 -->
-            <label class="label" for="activity-select">Activity</label> <!-- �뱶濡��떎�슫 �씪踰� -->
-            <select id="activity-select" class="input"> <!-- �솢�룞 �꽑�깮 �뱶濡��떎�슫 -->
-              <option value="">Select an activity</option> <!-- 湲곕낯 �븞�궡 �샃�뀡 -->
-              <option value="Fishing">Fishing</option> <!-- �꽑�깮吏� 1 -->
-              <option value="Hiking">Hiking</option> <!-- �꽑�깮吏� 2 -->
-              <option value="Running">Running</option> <!-- �꽑�깮吏� 3 -->
-            </select>
-          </div>
+        <!-- 왼쪽 사이드바 -->
+        <aside class="col-12 col-md-2">
 
-          </div>
-        </div>
-        
-        <div class="card">
-          <div class="card-header sky">어디로 갈 계획이신가요?</div>
-          <div class="card-body">
-            <!-- TODO: JS濡� �룄�떆 �꽑�깮 �뱶濡��떎�슫 �젋�뜑留� (travel.js) -->
-            <p style="font-size: 0.85rem; color: var(--color-text-sub)">
-              원하는 여행지 선택입력
-            </p>
-            <div class="form-group"> <!-- Destination �뱶濡��떎�슫 臾띠쓬 -->
-            <label class="label" for="destination-select">Destination</label> <!-- �뱶濡��떎�슫 �씪踰� -->
-            <select id="destination-select" class="input"> <!-- �뿬�뻾吏� �꽑�깮 �뱶濡��떎�슫 -->
-              <option value="">Select a destination</option> <!-- 湲곕낯 �븞�궡 �샃�뀡 -->
-              <option value="Seoul">Seoul</option> <!-- �꽑�깮吏� 1 -->
-              <option value="Osaka">Osaka</option> <!-- �꽑�깮吏� 2 -->
-              <option value="Jeju">Jeju</option> <!-- �꽑�깮吏� 3 -->
-            </select>
-          </div>
-
-          </div>
-        </div>
-      </aside>
-
-      <!-- 以묒븰 硫붿씤 肄섑뀗痢� -->
-      <main class="main-content">
-        <h2 class="page-title">여행중 날씨를 알려드립니다</h2>
-
-        <form id="search-form" class="form">
-          <div class="card" style="margin-bottom: 20px">
-            <div class="card-header sky">알고싶은 기간을 입력하세요</div>
-            <div
-              class="card-body date-selector"
-              style="
-                min-height: 60px;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                color: var(--color-text-sub);
-                flex-wrap: wrap;
-              "
-            >
+          <!-- 활동 선택 카드 -->
+          <div class="card travel-card mb-3">
+            <div class="card-header sky">무엇을 할 계획이신가요?</div>
+            <div class="card-body">
+              <p class="card-hint">원하는 활동 선택입력.</p>
               <div class="form-group">
-                <label class="label" for="checkin-input">Check-in</label>
-                <input id="checkin-input" class="input" type="date" />
-              </div>
-
-              <div class="form-group">
-                <label class="label" for="checkout-input">Check-out</label>
-                <input id="checkout-input" class="input" type="date" />
+                <label class="label" for="activity-select">Activity</label>
+                <select id="activity-select" class="input form-select form-select-sm">
+                  <option value="">Select an activity</option>
+                  <option value="Fishing">Fishing</option>
+                  <option value="Hiking">Hiking</option>
+                  <option value="Running">Running</option>
+                </select>
               </div>
             </div>
           </div>
 
-          <div class="form-row actions">
-            <button id="submit-btn" class="btn primary" type="submit">Search</button>
-            <button id="reset-btn" class="btn ghost" type="button">Reset</button>
+          <!-- 목적지 선택 카드 -->
+          <div class="card travel-card">
+            <div class="card-header sky">어디로 갈 계획이신가요?</div>
+            <div class="card-body">
+              <p class="card-hint">원하는 여행지 선택입력</p>
+              <div class="form-group">
+                <label class="label" for="destination-select">Destination</label>
+                <select id="destination-select" class="input form-select form-select-sm">
+                  <option value="">Select a destination</option>
+                  <option value="Seoul">Seoul</option>
+                  <option value="Osaka">Osaka</option>
+                  <option value="Jeju">Jeju</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div id="message-area" class="message-area" aria-live="polite"></div>
-        </form>
+        </aside>
 
-        <!-- TODO: 寃��깋 寃곌낵 �뀒�씠釉� (travel.js) -->
-        <div class="card">
-          <div class="card-header sunset">여행기간중 날씨 칼랜더</div>
+        <!-- 메인 컨텐츠 -->
+        <main class="col-12 col-md-8">
 
-          <div class="card-body">
-            <div class="result-header">
-              <div id="result-meta" class="result-meta"></div>
+          <h2 class="page-title">여행중 날씨를 알려드립니다</h2>
+
+          <!-- 날짜 입력 폼 -->
+          <form id="search-form" class="form">
+
+            <div class="card travel-card mb-3">
+              <div class="card-header sky">알고싶은 기간을 입력하세요</div>
+              <div class="card-body date-selector">
+                <div class="row g-2 align-items-end">
+                  <div class="col-6 col-md-4">
+                    <label class="label" for="checkin-input">Check-in</label>
+                    <input id="checkin-input" class="input form-control form-control-sm" type="date" />
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <label class="label" for="checkout-input">Check-out</label>
+                    <input id="checkout-input" class="input form-control form-control-sm" type="date" />
+                  </div>
+                  <div class="col-12 col-md-4 d-flex gap-2">
+                    <button id="submit-btn" class="btn primary flex-fill" type="submit">Search</button>
+                    <button id="reset-btn"  class="btn ghost flex-fill"   type="button">Reset</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-          <div id="loading" class="loading hidden">Loading forecast...</div>
-          <div id="results" class="results"></div>
-        </div>
-      </div>
-      </main>
-      
+            <!-- 에러/성공 메시지 영역 -->
+            <div id="message-area" class="message-area" aria-live="polite"></div>
 
-      <!-- �삤瑜몄そ �궗�씠�뱶諛� -->
-      <aside class="sidebar" id="sidebar-right">
-        <div class="card">
-          <div class="card-header sunset">�윊� �솢�룞蹂� �궇�뵪 �똻</div>
-           
+          </form>
 
-          <div
-            class="card-body"
-            style="
-              font-size: 0.9rem;
-              line-height: 1.5;
-              color: var(--color-text-sub);
-            "
-          >
-            <!-- TODO: JS濡� �꽑�깮�맂 �솢�룞�뿉 留욌뒗 �똻 �젋�뜑留� (travel.js) -->
-            �솢�룞�쓣 �꽑�깮�븯硫� 留욎땄 �궇�뵪 �똻�씠 �몴�떆�맗�땲�떎.
+          <!-- 결과 캘린더 카드 -->
+          <div class="card travel-card">
+            <div class="card-header sunset">여행기간중 날씨 캘린더</div>
+            <div class="card-body">
+              <div class="result-header">
+                <div id="result-meta" class="result-meta"></div>
+              </div>
+              <!-- 로딩 표시 -->
+              <div id="loading" class="loading d-none">Loading forecast...</div>
+              <!-- 주별 캘린더 카드 삽입 영역 -->
+              <div id="results" class="results"></div>
+            </div>
           </div>
-        </div>
-      </aside>
-    </div>
 
-    <!-- ===== �븯�떒 �꽕鍮꾧쾶�씠�뀡 (紐⑤컮�씪 �쟾�슜) ===== -->
+        </main>
+
+        <!-- 오른쪽 사이드바 -->
+        <aside class="col-12 col-md-2">
+          <div class="card travel-card">
+            <div class="card-header sunset">활동별 날씨 안내</div>
+            <div class="card-body card-hint" id="activity-tips">
+              활동을 선택하면 맞춤 날씨 안내가 표시됩니다.
+            </div>
+          </div>
+        </aside>
+
+      </div><!-- /row -->
+    </div><!-- /container -->
+
+    <!-- ===== 하단 모바일 내비 (기존 코드 유지) ===== -->
     <nav class="bottom-nav">
-      <a href="index.html" class="nav-link">
-        <i class="fa-solid fa-house"></i>�솃
-      </a>
-      <a href="map.html" class="nav-link">
-        <i class="fa-solid fa-map-location-dot"></i>吏��룄
-      </a>
-      <a href="travel.html" class="nav-link">
-        <i class="fa-solid fa-plane"></i>�뿬�뻾
-      </a>
-      <a href="outfit.html" class="nav-link">
-        <i class="fa-solid fa-shirt"></i>�샆李⑤┝
-      </a>
+      <a href="index.html"  class="nav-link"><i class="fa-solid fa-house"></i>홈</a>
+      <a href="map.html"    class="nav-link"><i class="fa-solid fa-map-location-dot"></i>지도</a>
+      <a href="travel.html" class="nav-link"><i class="fa-solid fa-plane"></i>여행</a>
+      <a href="outfit.html" class="nav-link"><i class="fa-solid fa-shirt"></i>옷차림</a>
     </nav>
 
+    <!-- ===== 3시간 예보 모달 ===== -->
+    <div id="hourly-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header sky">
+            <div>
+              <h5 id="modal-title" class="modal-title mb-0">3-hour forecast</h5>
+              <small id="modal-subtitle" class="opacity-75"></small>
+            </div>
+            <button id="modal-close" type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="modal-hint">
+              This breakdown comes from <b>/data/2.5/forecast</b> (3-hour steps).
+            </p>
+            <div id="hourly-list" class="table-responsive"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- �쁽�옱 �럹�씠吏� �꽕鍮꾧쾶�씠�뀡 �솢�꽦�솕 -->
+    <!-- ===== 스크립트 로드 ===== -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/travel.js"></script>
+
+    <!-- 현재 페이지 nav active 표시 -->
     <script>
       document.querySelectorAll(".nav-link").forEach((link) => {
         if (link.getAttribute("href") === "travel.html") {
@@ -190,46 +193,6 @@
         }
       });
     </script>
-    <!-- 3-hour popup modal -->
-<div
-  id="hourly-modal"
-  class="modal hidden"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="modal-title"
->
-  <div class="modal-backdrop" data-close="true"></div>
-
-  <div class="modal-panel">
-    <div class="modal-header">
-      <div>
-        <div id="modal-title" class="modal-title">3-hour forecast</div>
-        <div id="modal-subtitle" class="modal-subtitle"></div>
-      </div>
-      <button
-        id="modal-close"
-        class="modal-close"
-        type="button"
-        aria-label="Close"
-      >
-        ×
-      </button>
-    </div>
-
-    <div class="modal-content">
-      <div class="modal-hint">
-        This breakdown comes from <b>/data/2.5/forecast</b> (3-hour steps).
-      </div>
-      <div id="hourly-list" class="hourly-list"></div>
-    </div>
-  </div>
-</div>
-
-<!-- config.js must load first so travel.js can read the API key -->
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/travel.js"></script>
 
   </body>
 </html>
