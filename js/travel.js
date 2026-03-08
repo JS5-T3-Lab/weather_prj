@@ -337,9 +337,6 @@ function getForecastLastDate(forecastData) {
 }
 
 function validateInputs({ activity, destination, checkIn, checkOut }) {
-  if (!API_KEY || API_KEY === "###") {
-    return { ok: false, message: "js/config.js 에 API 키를 설정해주세요." };
-  }
   if (!activity) {
     return { ok: false, message: "활동을 선택해주세요." };
   }
