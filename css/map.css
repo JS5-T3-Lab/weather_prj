@@ -457,6 +457,32 @@
   flex-shrink: 0;
 }
 
+/* ===== 주요 도시 뉴스 피드 스크롤 적용 ===== */
+/* 아이템들을 감싸는 부모 컨테이너(id="cityNewsFeed")에 설정 */
+#cityNewsFeed {
+  max-height: 540px; /* 약 7~8개 정도가 보이는 높이 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  padding-right: 8px; /* 스크롤바와 콘텐츠가 너무 붙지 않게 여백 추가 */
+}
+
+/* 스크롤바 디자인 (웹킷 브라우저 용) */
+#cityNewsFeed::-webkit-scrollbar {
+  width: 6px;
+}
+
+#cityNewsFeed::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#cityNewsFeed::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+#cityNewsFeed::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* 로딩 스켈레톤 */
 .news-skeleton {
   padding: 12px 0;
