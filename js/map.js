@@ -62,16 +62,18 @@ document.querySelectorAll(".layer-btn").forEach((btn) => {
   });
 });
 
-// 주요 도시에 날씨 데이터 표시
 async function renderCityMarkers() {
   for (const city of CITIES) {
     try {
+      // 변수 이름이 data 입니다.
       const data = await getCurrentWeatherByCoords(city.lat, city.lon);
       const temp = roundTemp(data.main.temp);
-      const sunrise = weatherData.sys.sunrise;
-      const sunset = weatherData.sys.sunset;
+
+      // weatherData가 아니라 data에서 꺼내야 합니다! (수정됨)
+      const sunrise = data.sys.sunrise;
+      const sunset = data.sys.sunset;
       const isDay = isDaytime(sunrise, sunset); // 낮/밤 계산
-      const emoji = getWeatherEmoji(weatherData.weather[0].main, isDay); // isDay 전달
+      const emoji = getWeatherEmoji(data.weather[0].main, isDay); // isDay 전달
 
       const markerHtml = `
         <div class="weather-marker">
@@ -105,8 +107,14 @@ function openDetailPanel(city, data) {
   document.getElementById("detailCityCountry").textContent = city.country;
   document.getElementById("detailTemp").textContent =
     `${roundTemp(data.main.temp)}°C`;
+  const descMap = {
+    온흐림: "흐림",
+    "실약한 비": "이슬비",
+    튼구름: "구름 많음",
+    "약한 비": "가벼운 비",
+  };
   document.getElementById("detailDesc").textContent =
-    data.weather[0].description;
+    descMap[data.weather[0].description] || data.weather[0].description;
   document.getElementById("detailFeelsLike").textContent =
     `${roundTemp(data.main.feels_like)}°C`;
   document.getElementById("detailHumidity").textContent =
@@ -195,13 +203,23 @@ async function renderFavoriteList() {
       const isDay = isDaytime(sunrise, sunset);
       const emoji = getWeatherEmoji(data.weather[0].main, isDay);
 
+      // 번역 다듬기 추가
+      const descMap = {
+        온흐림: "흐림",
+        "실약한 비": "이슬비",
+        튼구름: "구름 많음",
+        "약한 비": "가벼운 비",
+      };
+      const desc =
+        descMap[data.weather[0].description] || data.weather[0].description;
+
       const item = document.createElement("div");
       item.className = "favorite-item";
       item.innerHTML = `
         <span class="favorite-item-icon">${emoji}</span>
         <div class="favorite-item-info">
           <div class="favorite-item-name">${city.ko}</div>
-          <div class="favorite-item-temp">${data.weather[0].description}</div>
+          <div class="favorite-item-temp">${desc}</div>
         </div>
         <span class="news-city-temp">${temp}°C</span>
         <i class="fa-solid fa-xmark favorite-item-remove" title="삭제"></i>
@@ -244,6 +262,16 @@ async function renderNewsFeed() {
       const isDay = isDaytime(sunrise, sunset);
       const emoji = getWeatherEmoji(data.weather[0].main, isDay);
 
+      // 번역 다듬기 추가
+      const descMap = {
+        온흐림: "흐림",
+        "실약한 비": "이슬비",
+        튼구름: "구름 많음",
+        "약한 비": "가벼운 비",
+      };
+      const desc =
+        descMap[data.weather[0].description] || data.weather[0].description;
+
       const item = document.createElement("div");
       item.className = "news-feed-item";
       item.innerHTML = `
@@ -251,8 +279,7 @@ async function renderNewsFeed() {
         <div class="news-city-info">
           <div class="news-city-name">${city.ko}</div>
           <div class="news-city-desc">
-            ${data.weather[0].description} · 습도 ${data.main.humidity}%
-          </div>
+            ${desc} · 습도 ${data.main.humidity}% </div>
         </div>
         <span class="news-city-temp">${temp}°C</span>
       `;
