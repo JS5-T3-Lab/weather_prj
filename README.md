@@ -25,13 +25,13 @@
 
 | 항목 | 내용 |
 | :--- | :--- |
-| **프로젝트명** | Weather Scanner (Weatherman) |
+| **프로젝트명** | Weather Scanner |
 | **목적** | 현재 날씨 조회 / 도시 지도 날씨 / 여행 기간 날씨 캘린더 / 옷차림 추천 |
 | **아키텍처** | MPA — 팀원별 파일 분리로 Git 머지 충돌 최소화 |
 | **배포** | Vercel (Static Hosting + Serverless Function) |
 | **API 보안** | `config.js`는 `.gitignore`로 차단 → Vercel 환경변수 `WEATHER_API_KEY` → `api/proxy.js` 서버사이드 중계 |
 | **공통 JS** | `api.js` · `utils.js` · `cities.js` — 4개 페이지 모두 로드 |
-| **담당자** | 강기범(index·api·utils), 최지유(outfit), 정성모(index 공동), 기타(map·travel) |
+| **담당자** | 강기범(index·api·utils·map), 최지유(outfit), 정성모(index 공동), 강성종 (travel) |
 
 ---
 
