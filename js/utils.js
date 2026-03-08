@@ -57,21 +57,23 @@ function getWeatherIconClass(weatherMain, sunriseUnix, sunsetUnix) {
 }
 
 // 날씨 상태 → 이모지 반환
-function getWeatherEmoji(weatherMain) {
-  switch (weatherMain.toLowerCase()) {
-    case "clear":
-      return "☀️";
-    case "clouds":
-      return "☁️";
-    case "rain":
-      return "🌧️";
-    case "drizzle":
-      return "🌦️";
-    case "snow":
-      return "❄️";
-    case "thunderstorm":
-      return "⛈️";
-    default:
-      return "🌤️";
-  }
+function getWeatherEmoji(main, isDay = true) {
+  const map = {
+    Clear: isDay ? "☀️" : "🌙",
+    Clouds: isDay ? "⛅" : "☁️", // 낮엔 해구름, 밤엔 일반 구름
+    Rain: "🌧️",
+    Drizzle: "🌦️",
+    Thunderstorm: "⛈️",
+    Snow: "❄️",
+    Mist: "🌫️",
+    Smoke: "💨",
+    Haze: "🌫️",
+    Dust: "🌪️",
+    Fog: "🌫️",
+    Sand: "🌪️",
+    Ash: "🌋",
+    Squall: "🌬️",
+    Tornado: "🌪️",
+  };
+  return map[main] || "🌡️";
 }

@@ -327,7 +327,10 @@ async function loadFavoriteCities() {
     try {
       const data = await getCurrentWeatherByCoords(city.lat, city.lon); // api.js
       const temp = roundTemp(data.main.temp);
-      const emoji = getWeatherEmoji(data.weather[0].main); // utils.js
+      const sunrise = data.sys.sunrise;
+      const sunset = data.sys.sunset;
+      const isDay = isDaytime(sunrise, sunset);
+      const emoji = getWeatherEmoji(data.weather[0].main, isDay);
 
       const row = document.createElement("div");
       row.className = "list-row";

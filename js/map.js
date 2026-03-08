@@ -68,7 +68,10 @@ async function renderCityMarkers() {
     try {
       const data = await getCurrentWeatherByCoords(city.lat, city.lon);
       const temp = roundTemp(data.main.temp);
-      const emoji = getWeatherEmoji(data.weather[0].main); // utils.js
+      const sunrise = weatherData.sys.sunrise;
+      const sunset = weatherData.sys.sunset;
+      const isDay = isDaytime(sunrise, sunset); // 낮/밤 계산
+      const emoji = getWeatherEmoji(weatherData.weather[0].main, isDay); // isDay 전달
 
       const markerHtml = `
         <div class="weather-marker">
@@ -187,7 +190,10 @@ async function renderFavoriteList() {
     try {
       const data = await getCurrentWeatherByCoords(city.lat, city.lon);
       const temp = roundTemp(data.main.temp);
-      const emoji = getWeatherEmoji(data.weather[0].main);
+      const sunrise = data.sys.sunrise;
+      const sunset = data.sys.sunset;
+      const isDay = isDaytime(sunrise, sunset);
+      const emoji = getWeatherEmoji(data.weather[0].main, isDay);
 
       const item = document.createElement("div");
       item.className = "favorite-item";
@@ -233,7 +239,10 @@ async function renderNewsFeed() {
     try {
       const data = await getCurrentWeatherByCoords(city.lat, city.lon);
       const temp = roundTemp(data.main.temp);
-      const emoji = getWeatherEmoji(data.weather[0].main);
+      const sunrise = data.sys.sunrise;
+      const sunset = data.sys.sunset;
+      const isDay = isDaytime(sunrise, sunset);
+      const emoji = getWeatherEmoji(data.weather[0].main, isDay);
 
       const item = document.createElement("div");
       item.className = "news-feed-item";
