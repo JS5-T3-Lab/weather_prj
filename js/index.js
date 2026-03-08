@@ -12,11 +12,35 @@ const currentTempEl = summaryCardBody.querySelector("h2");
 const currentLocationEl = summaryCardBody.querySelector("p");
 
 // ===== 날씨 UI 업데이트 =====
+// ===== 날씨 UI 업데이트 =====
 function updateWeatherUI(data) {
+  // 1. 도시 이름 한글 변환 (cities.js 데이터와 좌표 비교)
+  let cityName = data.name;
+  if (typeof CITIES !== "undefined") {
+    const localCity = CITIES.find(
+      (c) =>
+        c.en.toLowerCase() === data.name.toLowerCase() ||
+        (Math.abs(c.lat - data.coord.lat) < 0.05 &&
+          Math.abs(c.lon - data.coord.lon) < 0.05),
+    );
+    if (localCity) {
+      cityName = localCity.ko; // 한국 도시명으로 덮어쓰기
+    }
+  }
+
+  // 2. OpenWeatherMap의 어색한 기계 번역 다듬기
+  let description = data.weather[0].description;
+  const descMap = {
+    온흐림: "흐림",
+    "실약한 비": "이슬비",
+    튼구름: "구름 많음",
+    "약한 비": "가벼운 비",
+  };
+  // 딕셔너리에 매핑된 단어가 있으면 덮어쓰고, 없으면 원래 API 단어 사용
+  description = descMap[description] || description;
+
   const temp = roundTemp(data.main.temp);
-  const cityName = data.name;
   const weatherMain = data.weather[0].main;
-  const description = data.weather[0].description;
   const sunrise = data.sys.sunrise;
   const sunset = data.sys.sunset;
 
