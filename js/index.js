@@ -386,15 +386,149 @@ async function initCurrentWeather() {
   }
 }
 
-// ===== 검색창 =====
+// ===== 검색창 (한글 자동완성 + 영문 글로벌 검색 하이브리드) =====
 const searchInput = document.getElementById("searchInput");
+const searchWrapper = searchInput.parentElement;
+searchWrapper.style.position = "relative";
+
+// 1. 드롭다운 UI 생성
+const searchDropdown = document.createElement("ul");
+searchDropdown.style.cssText =
+  "position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid var(--border); border-radius: 8px; list-style: none; padding: 0; margin-top: 4px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);";
+searchWrapper.appendChild(searchDropdown);
+
+// 2. 공통 날씨 업데이트 함수 (위도, 경도 기반)
+async function updateDashboardByCoords(lat, lon) {
+  try {
+    forecastCache = null; // 새 도시 데이터 로딩을 위해 캐시 비우기
+    const weatherData = await getCurrentWeatherByCoords(lat, lon);
+
+    updateWeatherUI(weatherData);
+    await initHourlyChart(lat, lon);
+    initAirQuality(lat, lon);
+    initYesterdayCompare(lat, lon, weatherData);
+    initWeeklyForecast(lat, lon);
+    initCurrentTrend(weatherData);
+  } catch (error) {
+    console.error(error);
+    alert("날씨 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 3. 글로벌 영문 도시 검색 함수 (OpenWeather API 호출)
+async function searchGlobalCity(cityName) {
+  try {
+    // api.js에 정의된 도시명 검색 함수 사용
+    const weatherData = await getCurrentWeather(cityName);
+
+    // API가 해당 도시를 찾지 못한 경우 (404 Not Found)
+    if (weatherData.cod && weatherData.cod !== 200) {
+      alert(
+        "도시를 찾을 수 없습니다. 정확한 영문 도시명(예: Paris, London)을 입력해주세요.",
+      );
+      return;
+    }
+
+    // 성공적으로 찾았다면 해당 도시의 위도/경도를 추출해서 대시보드 업데이트
+    const lat = weatherData.coord.lat;
+    const lon = weatherData.coord.lon;
+
+    updateDashboardByCoords(lat, lon);
+  } catch (error) {
+    console.error(error);
+    alert("글로벌 도시 검색 중 오류가 발생했습니다.");
+  }
+}
+
+// 4. 입력 시 자동완성 및 글로벌 검색 안내
 searchInput.addEventListener("input", (e) => {
   const keyword = e.target.value.trim();
-  if (keyword.length < 1) return;
-  const results = searchCityByKorean(keyword); // cities.js
+  if (keyword.length < 1) {
+    searchDropdown.style.display = "none";
+    return;
+  }
+
+  const results = searchCityByKorean(keyword); // cities.js 로컬 검색
+  searchDropdown.innerHTML = "";
+
   if (results.length > 0) {
-    // TODO: 자동완성 드롭다운 구현 (map.js 참고)
-    console.log("검색 결과", results);
+    // 한글 도시 검색 결과가 있을 때
+    results.forEach((city) => {
+      const li = document.createElement("li");
+      li.textContent = city.ko;
+      li.style.cssText =
+        "padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; transition: background 0.2s;";
+
+      li.addEventListener(
+        "mouseenter",
+        () => (li.style.backgroundColor = "#f8fafc"),
+      );
+      li.addEventListener(
+        "mouseleave",
+        () => (li.style.backgroundColor = "transparent"),
+      );
+
+      li.addEventListener("click", () => {
+        searchInput.value = city.ko;
+        searchDropdown.style.display = "none";
+        updateDashboardByCoords(city.lat, city.lon);
+      });
+
+      searchDropdown.appendChild(li);
+    });
+  } else {
+    // 검색 결과가 없으면 영문 글로벌 검색 버튼 표시
+    const li = document.createElement("li");
+    li.innerHTML = `<i class="fa-solid fa-globe"></i> <b>'${keyword}'</b> 전 세계 영문 검색 (클릭 또는 Enter)`;
+    li.style.cssText =
+      "padding: 10px 15px; cursor: pointer; color: var(--sky); font-size: 0.9rem; transition: background 0.2s;";
+
+    li.addEventListener(
+      "mouseenter",
+      () => (li.style.backgroundColor = "#f8fafc"),
+    );
+    li.addEventListener(
+      "mouseleave",
+      () => (li.style.backgroundColor = "transparent"),
+    );
+
+    li.addEventListener("click", () => {
+      searchDropdown.style.display = "none";
+      searchGlobalCity(keyword);
+    });
+
+    searchDropdown.appendChild(li);
+  }
+
+  searchDropdown.style.display = "block";
+});
+
+// 5. Enter 키 입력 시 검색 실행
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const keyword = searchInput.value.trim();
+    if (!keyword) return;
+
+    searchDropdown.style.display = "none";
+
+    // 1순위: 로컬 한글 도시와 정확히 일치하는지 확인
+    const localMatch = searchCityByKorean(keyword).find(
+      (c) => c.ko === keyword,
+    );
+    if (localMatch) {
+      updateDashboardByCoords(localMatch.lat, localMatch.lon);
+    } else {
+      // 2순위: 일치하는 한글 도시가 없으면 영문 API 검색 시도
+      searchGlobalCity(keyword);
+    }
+  }
+});
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener("click", (e) => {
+  if (!searchWrapper.contains(e.target)) {
+    searchDropdown.style.display = "none";
   }
 });
 
